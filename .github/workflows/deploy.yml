@@ -1,0 +1,93 @@
+name: Deploy to GCP VM
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:  # Allow manual trigger from GitHub UI
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install frontend dependencies
+        run: |
+          cd frontend
+          npm ci
+
+      - name: Build frontend (SSR)
+        run: |
+          cd frontend
+          cp .env.vm .env.production
+          npm run build:ssr
+
+      - name: Create deployment packages
+        run: |
+          # Frontend package (dist + package files for SSR deps)
+          cd frontend
+          tar -czvf ../frontend-deploy.tar.gz dist package.json package-lock.json
+          cd ..
+
+          # Backend package (exclude node_modules, uploads, .env)
+          tar -czvf backend-deploy.tar.gz \
+            --exclude='backend/node_modules' \
+            --exclude='backend/uploads/*' \
+            --exclude='backend/.env' \
+            backend
+
+      - name: Copy files to VM
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: 34.124.244.233
+          username: azlan
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: "frontend-deploy.tar.gz,backend-deploy.tar.gz"
+          target: "/tmp/deploy"
+
+      - name: Deploy on VM
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: 34.124.244.233
+          username: azlan
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            set -e
+            echo "=== Starting deployment ==="
+
+            # Deploy backend
+            echo "Deploying backend..."
+            cd /tmp/deploy
+            tar -xzvf backend-deploy.tar.gz
+            sudo rsync -av --delete \
+              --exclude='.env' \
+              --exclude='node_modules' \
+              --exclude='uploads' \
+              backend/ /var/www/whatsnewasia/backend/
+            cd /var/www/whatsnewasia/backend
+            npm install --omit=dev
+
+            # Deploy frontend
+            echo "Deploying frontend..."
+            cd /tmp/deploy
+            tar -xzvf frontend-deploy.tar.gz -C /var/www/whatsnewasia/whatsnewfrontend/
+            cd /var/www/whatsnewasia/whatsnewfrontend
+            npm install --legacy-peer-deps --omit=dev
+
+            # Restart PM2
+            echo "Restarting PM2..."
+            pm2 restart whatsnewasia-backend
+
+            # Cleanup
+            rm -rf /tmp/deploy/*
+
+            echo "=== Deployment complete ==="
