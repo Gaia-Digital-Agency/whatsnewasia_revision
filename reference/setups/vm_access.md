@@ -1,0 +1,1 @@
+gcloud compute ssh gda-s01 --zone=asia-southeast1-b --project=gda-viceroy
