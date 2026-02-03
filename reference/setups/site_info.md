@@ -1,3 +1,22 @@
+# GDA-S01 Site Information
+
+## External IP: 34.124.244.233
+
+## Live URLs
+
+| Project | URL | Status |
+|---------|-----|--------|
+| whatsnewasia | http://34.124.244.233/ | Active |
+| 02staging | http://34.124.244.233/02staging/ | Placeholder |
+| 03staging | http://34.124.244.233/03staging/ | Placeholder |
+
+---
+
+## Nginx Configuration
+
+File location on VM: `/etc/nginx/sites-available/gda-s01`
+
+```nginx
 # Nginx Configuration for GDA-S01 VM (SSR Mode)
 # All requests go through the Node.js backend for server-side rendering
 
@@ -54,3 +73,36 @@ server {
         root /usr/share/nginx/html;
     }
 }
+```
+
+---
+
+## Setup Commands (run on VM)
+
+```bash
+# Create staging folders
+sudo mkdir -p /var/www/02staging /var/www/03staging
+
+# Create Hello World pages
+echo '<!DOCTYPE html>
+<html>
+<head><title>02 Staging</title></head>
+<body><h1>Hello World - 02 Staging</h1></body>
+</html>' | sudo tee /var/www/02staging/index.html
+
+echo '<!DOCTYPE html>
+<html>
+<head><title>03 Staging</title></head>
+<body><h1>Hello World - 03 Staging</h1></body>
+</html>' | sudo tee /var/www/03staging/index.html
+
+# Set permissions
+sudo chown -R www-data:www-data /var/www/02staging /var/www/03staging
+sudo chmod -R 755 /var/www/02staging /var/www/03staging
+
+# Update Nginx config
+sudo nano /etc/nginx/sites-available/gda-s01
+
+# Test and reload Nginx
+sudo nginx -t && sudo systemctl reload nginx
+```
