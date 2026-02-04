@@ -32,7 +32,7 @@ export const routes: RouteObject[] = [
 
 
 const FrontApp = () => {
-    const router = createBrowserRouter(routes)
+    const router = createBrowserRouter(routes, {basename: import.meta.env.VITE_BASE_PATH || '/'})
     return <RouterProvider router={router} />
 }
 
