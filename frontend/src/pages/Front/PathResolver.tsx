@@ -339,28 +339,38 @@ const resolveRoute = async (path: string, tax: TaxonomyProps, _userDetails: User
 const PathResolver: React.FC = () => {
     const { routeType, setRouteType, setActualRoute, actualRoute, setClientChange, clientChange } = useRoute()
     const [renderState, setRenderState] = useState({ type: routeType, listingParams: actualRoute })
+    const [firstRender, setFirstRender] = useState<boolean>(true)
     const prevParams = useRef<any>(null)
-    const firstRender = useRef(true)
+    // const firstRender = useRef(true)
     const params = useParams()
     const path = params["*"]
     const { taxonomies } = useTaxonomies()
     const {userDetails} = useAuth()
 
     useEffect(() => {
-        if (firstRender.current) {
-            prevParams.current = params
-            firstRender.current = false
-            // Trigger initial route resolution when no SSR data
-            if (routeType === 'LOADING' || !routeType) {
-                setClientChange(true)
-            }
-            return
-        }
+        prevParams.current = params
+    }, [])
+    useEffect(() => {
+        // if (firstRender) {
+            
+        // //     // firstRender.current = false
+        // //     // Trigger initial route resolution when no SSR data
+        // //     // if (routeType === 'LOADING' || !routeType) {
+        // //     //     setClientChange(true)
+        // //     // }
+        // //     // return
+        // }
         if (prevParams.current["*"] !== params["*"]) {
             prevParams.current = params
-            setClientChange(true)
+            setFirstRender(false)
+            // setClientChange(true)
         }
     }, [params])
+
+    useEffect(() => {
+        if(firstRender) return
+        setClientChange(true)
+    }, [firstRender])
 
     useEffect(() => {
         if (!clientChange) return

@@ -31,7 +31,7 @@ export const RouteProvider: React.FC<RouteProviderProps> = ({children, initialDa
     const [actualRoute, setStateActualRoute] = useState<RouteProps>(initialData?.listingParams ?? {})
     const [routeType, setStateRouteType] = useState<string>(initialData?.type ?? 'LOADING')
     // Set to true by default since SSR is disabled - allows components to fetch content on initial load
-    const [clientChange, setStateClientChange] = useState<boolean>(true)
+    const [clientChange, setStateClientChange] = useState<boolean>(false)
     const setActualRoute = (params: RouteProps) => {
         setStateActualRoute(prev => ({...prev, ...params}));
         // setClientChange(true)

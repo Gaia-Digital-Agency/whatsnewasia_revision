@@ -69,8 +69,8 @@ const NavLogo: React.FC<NavLogoProps> = ({to = '/'}) => {
         if(!defaultImage && !image) {
             return <Skeleton height="76px" width="141px" containerClassName="logo-wrapper-skeleton inline-block" />
         }
-        if(!image && defaultImage) return <img src={defaultImage ? `${IMAGE_URL}/${defaultImage.url}` : '#'} style={{display: defaultImage ? 'block' : 'none'}} width={230} height={76} alt="Logo" />
-        return <img src={image ? `${IMAGE_URL}/${image.url}` : '#'} style={{display: image ? 'block' : 'none'}} width={230} height={76} alt="Logo" />
+        if(!image && defaultImage) return <img src={defaultImage ? `${IMAGE_URL}/${defaultImage.url}` : '#'} style={{display: defaultImage ? 'block' : 'none'}} width={170} height={76} alt="Logo" />
+        return <img src={image ? `${IMAGE_URL}/${image.url}` : '#'} style={{display: image ? 'block' : 'none'}} width={170} height={76} alt="Logo" />
     }
 
     return (

@@ -10,6 +10,7 @@ type SearchBarProps = {
 }
 
 const SearchBar: React.FC<SearchBarProps> = ({search, setSearch}) => {
+    // return <></>
     const navigate = useNavigate()
     const [isMobileActive, setIsMobileActive] = useState<boolean>(false)
     const formRef = useRef<HTMLFormElement>(null)

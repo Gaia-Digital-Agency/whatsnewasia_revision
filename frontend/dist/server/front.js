@@ -2,15 +2,15 @@ import { jsx, Fragment } from "react/jsx-runtime";
 import { PassThrough } from "stream";
 import { renderToPipeableStream } from "react-dom/server";
 import { createMemoryRouter, RouterProvider } from "react-router";
-import { T as TimeProvider, a as TaxonomyProvider, R as RouteProvider, C as ContentProvider, H as HeaderContentProvider, A as AuthProvider, p as pkg } from "./assets/TimeContext-BnC1e41s.js";
+import { T as TimeProvider, a as TaxonomyProvider, R as RouteProvider, C as ContentProvider, H as HeaderContentProvider, A as AuthProvider, p as pkg } from "./assets/TimeContext-BxmeFsde.js";
 import { lazy, Suspense } from "react";
 import "react-fast-compare";
 import "invariant";
 import "shallowequal";
 import "axios";
-const FrontLayout = lazy(() => import("./assets/FrontLayout-vVwpSsKW.js"));
-const SignIn = lazy(() => import("./assets/SignIn-B-9tkFEF.js"));
-const PathResolver = lazy(() => import("./assets/PathResolver-BWkO76Yc.js"));
+const FrontLayout = lazy(() => import("./assets/FrontLayout-BYge_str.js"));
+const SignIn = lazy(() => import("./assets/SignIn-CGL6oxWF.js"));
+const PathResolver = lazy(() => import("./assets/PathResolver-Cf3L9T35.js"));
 const routes = [
   { path: "/signin", element: /* @__PURE__ */ jsx(Suspense, { fallback: /* @__PURE__ */ jsx(Fragment, {}), children: /* @__PURE__ */ jsx(SignIn, {}) }) },
   // { path: "/signup", element: <Suspense fallback={<></>}><SignUp /></Suspense> },
@@ -25,8 +25,11 @@ const routes = [
 ];
 const { HelmetProvider } = pkg;
 function render(url, initialData) {
+  const basename = process.env.VITE_BASE_PATH || "/";
+  const fullUrl = basename.replace(/\/$/, "") + (url.startsWith("/") ? url : "/" + url);
   const memoryRouter = createMemoryRouter(routes, {
-    initialEntries: [url]
+    basename,
+    initialEntries: [fullUrl]
   });
   const { initialTaxonomies, initialRoute, initialContent, initialTemplateContent, initialAuth, initialTime } = initialData;
   const helmetContext = {};

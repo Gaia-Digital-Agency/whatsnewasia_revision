@@ -13,7 +13,7 @@ type MainAppProps = {
 
 const App: React.FC<MainAppProps> = ({children, initialData}) => {
   return (
-    <React.StrictMode>
+    // <React.StrictMode>
           <TimeProvider initialData={initialData?.initialTime}>
               <TaxonomyProvider initialData={initialData?.initialTaxonomies}>
                   <RouteProvider initialData={initialData?.initialRoute}>
@@ -29,7 +29,7 @@ const App: React.FC<MainAppProps> = ({children, initialData}) => {
                   </RouteProvider>
               </TaxonomyProvider>
           </TimeProvider>
-      </React.StrictMode>
+    //   </React.StrictMode>
   )
 }
 

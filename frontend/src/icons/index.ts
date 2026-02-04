@@ -67,6 +67,7 @@ import { ReactComponent as CloseMenu } from "./close-menu.svg?react";
 import { ReactComponent as SearchIcon } from "./search.svg?react";
 import { ReactComponent as ButtonChevron } from "./button-chevron.svg?react";
 import { ReactComponent as ButtonChevronBorder } from "./button-chevron-border.svg?react";
+import { ReactComponent as LocationIcon } from "./location.svg?react"
 
 
 export {
@@ -138,5 +139,6 @@ export {
   CloseMenu,
   SearchIcon,
   ButtonChevron,
-  ButtonChevronBorder
+  ButtonChevronBorder,
+  LocationIcon
 };
