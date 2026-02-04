@@ -62,6 +62,7 @@ export default defineConfig((args) => {
     css: {
       postcss: './postcss.config.ts'
     },
+    base: env.VITE_BASE_PATH,
     build: {
       // cssCodeSplit: false,
       minify: true,
