@@ -6,9 +6,11 @@ A full-stack content management and publishing platform for news and articles ac
 
 | Environment | URL |
 |-------------|-----|
-| **Frontend (Public Site)** | http://34.124.244.233 |
-| **Admin Panel** | http://34.124.244.233/admin |
-| **Backend API** | http://34.124.244.233/api |
+| **Frontend (Public Site)** | http://34.124.244.233/whatsnewasia/ |
+| **Admin Panel** | http://34.124.244.233/whatsnewasia/admin |
+| **Backend API** | http://34.124.244.233/whatsnewasia/api |
+
+> **Note:** The site runs under the `/whatsnewasia/` base path. Nginx strips this prefix before proxying to the backend.
 
 ---
 
@@ -109,14 +111,16 @@ Current deployment configuration for WhatsNewAsia on GCP Compute Engine VM.
 ### VM Folder Structure
 
 ```
-/home/azlan/apps/whatsnewasia/
+/var/www/whatsnewasia/
 ├── backend/                    # Node.js Express API + SSR
 │   ├── app.js                  # Main entry point
 │   ├── .env                    # Environment variables
+│   ├── uploads/                # Uploaded media files
 │   └── src/                    # Source code
 │
-└── whatsnewfrontend/           # Frontend SSR build
+└── frontend/                   # Frontend SSR build
     ├── package.json            # Dependencies for SSR
+    ├── .env.production         # Production environment
     ├── node_modules/           # SSR runtime dependencies
     └── dist/
         ├── client/             # Static assets
@@ -357,12 +361,22 @@ REDIS_ENABLED=false
 IMAGE_URL=https://storage.googleapis.com/gda_p01_storage/gda_wna_images
 ```
 
-### Frontend (.env)
+### Frontend (.env.production for VM)
 
 ```env
-VITE_WHATSNEW_BACKEND_URL=http://34.124.244.233
-VITE_SITE_URL=http://34.124.244.233
-VITE_IMAGE_URL=https://storage.googleapis.com/gda_p01_storage/gda_wna_images
+VITE_WHATSNEW_BACKEND_URL=http://34.124.244.233/whatsnewasia
+VITE_SITE_URL=http://34.124.244.233/whatsnewasia
+VITE_BASE_PATH=/whatsnewasia
+VITE_IMAGE_URL=http://34.124.244.233/whatsnewasia
+```
+
+### Frontend (.env for local development)
+
+```env
+VITE_WHATSNEW_BACKEND_URL=http://localhost:8080
+VITE_SITE_URL=http://localhost:8080
+VITE_BASE_PATH=/
+VITE_IMAGE_URL=http://localhost:8080
 ```
 
 ---
@@ -371,7 +385,7 @@ VITE_IMAGE_URL=https://storage.googleapis.com/gda_p01_storage/gda_wna_images
 
 ### Access
 
-- URL: http://34.124.244.233/admin
+- URL: http://34.124.244.233/whatsnewasia/admin
 - Default credentials:
   - Email: `super_admin@admin.com`
   - Password: `12345678`
@@ -488,4 +502,4 @@ whatsnewasia/
 
 ---
 
-*Last updated: February 3, 2026 - Migrated from Cloud Run to GCP Compute Engine VM with SSR enabled*
+*Last updated: February 6, 2026 - Added /whatsnewasia base path support, fixed image URL double slashes*
