@@ -9,6 +9,7 @@ import { getArticleByKeyword } from "../../../services/article.service";
 import Button from "../../../components/front/Button";
 import { useContent } from "../../../context/ContentContext";
 import { useRoute } from "../../../context/RouteContext";
+import { Helmet } from "react-helmet-async";
 
 const ArticleCard: React.FC<{article: ArticleProps & {createdAt?: string}}> = ({article}) => {
     const {getPermalink, getFeaturedImageUrl} = useArticle()
@@ -101,6 +102,10 @@ const Search: React.FC = () => {
 
     return (
         <>
+            <Helmet>
+                <title>{q ?? 'Search'} - Whatsnew Asia</title>
+                <meta name="description" content="Whats's New Asia is the ultimate city guide for expats and travelers, featuring the best dining, events, schools, wellness, and travel in Asia" />
+            </Helmet>
             <section className="py-12">
                 <div className="container">
                     <Advertisement />
