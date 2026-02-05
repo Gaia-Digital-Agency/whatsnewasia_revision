@@ -189,7 +189,7 @@ const HeroImage: React.FC<ComponentTemplateHomeProps> = ({preContent = [], admin
                         <Swiper
                             onSwiper={(swiper) => imageRef.current = swiper}
                             slidesPerView={1}
-                            loop={true}
+                            // loop={true}
                             allowTouchMove={false}
                         >
                             {content.map((item, i) => {
@@ -208,7 +208,7 @@ const HeroImage: React.FC<ComponentTemplateHomeProps> = ({preContent = [], admin
                             <Swiper
                                 onSwiper={swiper => textRef.current = swiper}
                                 slidesPerView={1}
-                                loop={true}
+                                // loop={true}
                                 autoHeight={true}
                                 noSwiping={true}
                                 allowTouchMove={false}
