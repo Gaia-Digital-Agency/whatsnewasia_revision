@@ -131,7 +131,6 @@ const Single: React.FC = () => {
     const {setNotification} = useNotification()
     const {userDetails} = useAuth()
     const [isClient, setIsClient] = useState<boolean>(false)
-    console.log(userDetails, 'userDetails single')
     const deepestLocation = getDeepestLocation(actualRoute.article, 'city')
 
     useEffect(() => {
@@ -238,7 +237,7 @@ const Single: React.FC = () => {
         <>
         <Helmet>
             <title>{actualRoute.article?.title ?? ''} - Whatsnew Asia</title>
-            <meta name="description" content={actualRoute.article?.sub_title} />
+            <meta name="description" content={String(content?.meta_data?.meta_description ?? content?.sub_title ?? '')} />
             <link rel="canonical" href={`${SITE_URL}/${actualRoute.country?.slug}/${actualRoute.category?.slug_title}/${actualRoute.article?.slug}`} />
             <meta property="og:type" content="article" />
             <meta property="og:title" content={`${actualRoute.article?.title ?? ''} - Whatsnew Asia`} />

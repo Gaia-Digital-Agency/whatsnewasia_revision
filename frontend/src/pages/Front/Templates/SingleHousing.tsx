@@ -209,7 +209,7 @@ const SingleHousing: React.FC = () => {
         <>
         <Helmet>
             <title>{actualRoute.article?.title} - Whatsnew Asia</title>
-            <meta name="description" content={actualRoute.article?.sub_title} />
+            <meta name="description" content={String(content?.meta_data?.meta_description ?? content?.sub_title ?? '')} />
             <link rel="canonical" href={`${SITE_URL}/${actualRoute.country?.slug}/${actualRoute.category?.slug_title}/${actualRoute.article?.slug}`} />
             <meta property="og:type" content="article" />
             <meta property="og:title" content={`${actualRoute.article?.title} - Whatsnew Asia`} />
