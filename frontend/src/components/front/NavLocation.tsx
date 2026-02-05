@@ -7,8 +7,8 @@ import { CityProps, RegionProps } from "../../context/TaxonomyContext"
 import { Link } from "react-router"
 import { SwiperRef } from "swiper/react"
 import { SwiperSlide, Swiper } from "swiper/react"
+import "swiper/swiper-bundle.css";
 import { Navigation } from "swiper/modules"
-import DropDownCountry from "./DropDownCountry"
 
 // import { useAuth } from "../../context/AuthContext" // No longer needed after removing Indonesia redirect
 

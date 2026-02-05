@@ -15,6 +15,8 @@ import SearchBar from "../../../components/front/SearchBar"
 import { getTemplateByUrl } from "../../../services/template.service"
 import { useHeaderContent } from "../../../context/HeaderContext"
 import DropDownCountry from "../../../components/front/DropDownCountry"
+import DropDownCity from "../../../components/front/DropDownCity"
+import DropDownRegion from "../../../components/front/DropDownRegion"
 
 
 
@@ -243,13 +245,13 @@ const Header: React.FC = () => {
 
 
                 <div className="location-wrapper nav-location-wrapper" ref={locationRef}>
-                    <div className={`inner container justify-between items-center mx-auto py-4 lg:flex flex ${actualRoute.country ? 'md:flex' : 'md:hidden'}`}>
+                    <div className={`inner container justify-between items-center mx-auto py-4 lg:flex flex ${(actualRoute.country && taxonomies.cities?.filter(city => (city.id_parent == actualRoute.country?.id)).length) ? 'md:flex' : 'md:hidden'}`}>
                         <div className="flex md:hidden">
                             <DropDownCountry />
                         </div>
                         <div className="md:flex hidden lg:hidden gap-x-[20px]">
-                            <DropDownCountry />
-                            <DropDownCountry />
+                            <DropDownCity />
+                            <DropDownRegion />
                         </div>
                         <div className="item lg:flex hidden w-full">
                             <NavLocation />
