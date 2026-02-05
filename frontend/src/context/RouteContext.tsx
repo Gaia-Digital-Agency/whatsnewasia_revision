@@ -10,22 +10,26 @@ type RouteContextProps = {
     setRouteType: (type: string) => void,
     clientChange: boolean,
     setClientChange: (type: boolean) => void,
-    getLocationRouteUrl: () => string
+    getLocationRouteUrl: () => string,
+    generateLocationRouteUrl: ({}: LocationProps) => string
 }
 
-export type RouteProps = {
+type LocationProps = {
     country?: CountryProps | undefined,
     city?: CityProps | undefined,
     region?: RegionProps | undefined,
     category?: Category | undefined
-    article?: ArticleApiResponseProps | undefined
 }
+
+export type RouteProps = {
+    article?: ArticleApiResponseProps | undefined
+} & LocationProps
 
 interface RouteProviderProps extends PropsWithChildren {
     initialData: any
 }
 
-const RouteContext = createContext<RouteContextProps>({actualRoute: {country: undefined, city: undefined, region: undefined}, setActualRoute: () => {}, routeType: "", setRouteType: () => {}, clientChange: false, setClientChange: () => {}, getLocationRouteUrl: () => ('')})
+const RouteContext = createContext<RouteContextProps>({actualRoute: {country: undefined, city: undefined, region: undefined}, setActualRoute: () => {}, routeType: "", setRouteType: () => {}, clientChange: false, setClientChange: () => {}, getLocationRouteUrl: () => (''), generateLocationRouteUrl: () => ('')})
 
 export const RouteProvider: React.FC<RouteProviderProps> = ({children, initialData}) => {
     const [actualRoute, setStateActualRoute] = useState<RouteProps>(initialData?.listingParams ?? {})
@@ -47,8 +51,16 @@ export const RouteProvider: React.FC<RouteProviderProps> = ({children, initialDa
     const getLocationRouteUrl = () => {
         return `${actualRoute.country ? `/${actualRoute.country.slug}` : ''}${actualRoute.city ? `/${actualRoute.city.slug}` : ''}${actualRoute.region ? `/${actualRoute.region.slug}` : ''}`
     }
+    const generateLocationRouteUrl = ({country, city, region, category}: LocationProps) => {
+        let res = [];
+        if(country) res.push(country.slug);
+        if(city) res.push(city.slug);
+        if(region) res.push(region.slug);
+        if(category)res.push(category.slug_title)
+        return '/' + res.join('/')
+    }
     return (
-        <RouteContext.Provider value={{actualRoute, setActualRoute, routeType, setRouteType, clientChange, setClientChange, getLocationRouteUrl}}>
+        <RouteContext.Provider value={{actualRoute, setActualRoute, routeType, setRouteType, clientChange, setClientChange, getLocationRouteUrl, generateLocationRouteUrl}}>
             {children}
         </RouteContext.Provider>
     )
