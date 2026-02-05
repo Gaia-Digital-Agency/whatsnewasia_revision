@@ -85,7 +85,7 @@ type TaxonomiesProps = {
 }
 
 export function render(url: string, initialData: InitialDataProps) {
-    const basename = process.env.VITE_BASE_PATH || '/'
+    const basename = process.env.VITE_BASE_PATH || '/';
     // Prepend basename to URL since nginx strips it
     const fullUrl = basename.replace(/\/$/, '') + (url.startsWith('/') ? url : '/' + url);
     const memoryRouter = createMemoryRouter(routes, {
