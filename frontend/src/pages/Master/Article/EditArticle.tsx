@@ -39,6 +39,7 @@ import { useAuth } from "../../../context/AuthContext"
 // import MultiSelect from "../../../components/form/MultiSelect"
 // import ReactSelect from 'react-select'
 import toSlug from "../../../lib/utils/slugify"
+import TextArea from "../../../components/form/input/TextArea"
 
 
 const API_URL = import.meta.env.VITE_WHATSNEW_BACKEND_URL
@@ -550,6 +551,19 @@ const EditArticle: React.FC<{action: "add" | "edit"}> = ({action}) => {
         setBlock(true)
     }
 
+    const metaTitleHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setMetaData(oldMeta => {
+            return {...oldMeta, meta_title: e.target.value}
+        })
+        setBlock(true)
+    }
+    const metaDescriptionHandler = (e: string) => {
+        setMetaData(oldMeta => {
+            return {...oldMeta, meta_description: e}
+        })
+        setBlock(true)
+    }
+
     const saveArticleHandler = async (isPublish: boolean = false) => {
         if(isPublish) {
             setStatus('published')
@@ -665,7 +679,20 @@ const EditArticle: React.FC<{action: "add" | "edit"}> = ({action}) => {
                             <div className="spacer py-6"></div>
                             {renderMetadata()}
                         </ComponentCard>
+                        <br />
+                        <ComponentCard>
+                            <InputWrapper label="Meta Title">
+                                <Input placeholder={title} value={metaData?.meta_title || ""} onChange={metaTitleHandler}></Input>
+                            </InputWrapper>
+                            <InputWrapper label="Meta Description">
+                                <TextArea value={metaData?.meta_description || ""} placeholder="Meta Description" onChange={metaDescriptionHandler}></TextArea>
+                                {/* <Input placeholder={title} value={metaData?.meta_title || ""}></Input> */}
+                            </InputWrapper>
+                        </ComponentCard>
                     </div>
+
+
+
                     <div className="col-span-4">
                         <ComponentCard>
                             <InputWrapper label="Post Status">
