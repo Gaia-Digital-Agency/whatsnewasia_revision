@@ -261,6 +261,7 @@ app.use('*', async (req, res, next) => {
     // const csrOnlyRoutes = ['/admin']
 
     let render, template
+    let isAdmin = false
     // const isCsrOnly = csrOnlyRoutes.some(route => url.startsWith(route))
     // template = fs.readFileSync(templatePath, 'utf-8');
     // if (!isProd) {
@@ -275,7 +276,7 @@ app.use('*', async (req, res, next) => {
         )
         template = await vite.transformIndexHtml(url, template)
 
-        render = (await vite.ssrLoadModule('/src/entry-server.tsx')).render
+        render = (await vite.ssrLoadModule('/src/entry-server-admin.tsx')).render
     } else {
         template = fs.readFileSync(
             path.join(frontendPath, 'dist', 'client', 'src', 'mainAdmin.html'),
@@ -285,6 +286,7 @@ app.use('*', async (req, res, next) => {
             path.join(frontendPath, 'dist/server/admin.js')
         )).render
     } 
+    isAdmin = true
   } else {
       if (!isProd) {
           template = fs.readFileSync(
@@ -341,6 +343,10 @@ app.use('*', async (req, res, next) => {
 
     html = html.replaceAll('link rel="stylesheet"', `link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'"`)
 
+    if(isAdmin) {
+       res.status(200).set({ 'Content-Type': 'text/html' }).end(html);
+       return
+    }
     html = html.replace(
         '<!-- passdata -->',
         `<script>window.__INITIAL_DATA__ = ${JSON.stringify(passData)}</script>`
