@@ -72,21 +72,19 @@ const Overseas: React.FC<ComponentTemplateHomeProps> = ({preContent = []}) => {
                                         content?.map((article) => {
                                             if(article) {
                                                 return (
-                                                    <>
-                                                        <div className={`md:col-span-6 lg:col-span-3 col-span-12 line-right-5 relative`}>
-                                                            <div className="image-wrapper mb-5">
-                                                                <Image url={getFeaturedImageUrl(article)} ratio="100%" mobileRatio="125%" link={getPermalink(article)} alt={article?.featured_image_alt} />
-                                                            </div>
-                                                            <div className="category-wrapper mb-2">
-                                                                <p className="text-front-grey">{findCategory(article)?.title}</p>
-                                                            </div>
-                                                            <div className="title-wrapper">
-                                                                <Link to={getPermalink(article)}>
-                                                                    <p className="text-front-title text-front-grey font-serif">{article.title}</p>
-                                                                </Link>
-                                                            </div>
+                                                    <div key={'overseas-' + article.id} className={`md:col-span-6 lg:col-span-3 col-span-12 line-right-5 relative`}>
+                                                        <div className="image-wrapper mb-5">
+                                                            <Image url={getFeaturedImageUrl(article)} ratio="100%" mobileRatio="125%" link={getPermalink(article)} alt={article?.featured_image_alt} />
                                                         </div>
-                                                    </>
+                                                        <div className="category-wrapper mb-2">
+                                                            <p className="text-front-grey">{findCategory(article)?.title}</p>
+                                                        </div>
+                                                        <div className="title-wrapper">
+                                                            <Link to={getPermalink(article)}>
+                                                                <p className="text-front-title text-front-grey font-serif">{article.title}</p>
+                                                            </Link>
+                                                        </div>
+                                                    </div>
                                                 )
                                             }
                                         })
