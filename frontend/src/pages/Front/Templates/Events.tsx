@@ -384,6 +384,7 @@ const Events: React.FC = () => {
         <>
             <Helmet>
                 <title>Events - Whatsnew Asia</title>
+                <meta name="description" content="Whats's New Asia is the ultimate city guide for expats and travelers, featuring the best dining, events, schools, wellness, and travel in Asia" />
             </Helmet>
             <section>
                 <div className="container py-16">

@@ -84,6 +84,7 @@ const Newsletter: React.FC = () => {
                     onChange={changeHandler}
                     type="email"
                     value={email}
+                    suppressHydrationWarning={true}
                   />
                 </div>
                 <div className="button">
