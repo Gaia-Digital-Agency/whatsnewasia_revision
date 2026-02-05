@@ -29,7 +29,7 @@ const isProd = process.env.NODE_ENV === "production";
 
 // SSR paths - only used if FRONTEND_PATH is provided
 const frontendPath = process.env.FRONTEND_PATH
-  ? path.resolve(__dirname, '..', process.env.FRONTEND_PATH)
+  ? path.resolve(__dirname, process.env.FRONTEND_PATH)
   : null;
 const templatePath = frontendPath
   ? (isProd
@@ -94,13 +94,13 @@ app.use(
   })
 );
 
-const BASE = process.env.SITEMAP_URL
 
 const esc = (s) =>
   s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
 
 app.use("/sitemap.xml", async (req, res, next) => {
   try {
+    const BASE = `${req.protocol}://${req.host}`
     
     const taxonomies = await fetchTaxonomyData()
     const urls = []
@@ -161,7 +161,7 @@ Disallow: /signin
 Disallow: /api/
 Allow: /
 
-Sitemap: ${process.env.SITEMAP_URL}/sitemap.xml`)
+Sitemap: ${req.protocol}://${req.host}/sitemap.xml`)
 })
 
 if (!isProd && vite) {
@@ -233,7 +233,6 @@ app.use('*', async (req, res, next) => {
   if (req.originalUrl.startsWith('/api')) {
     return next();
   }
-
   // Skip SSR when running as API-only service or when frontendPath is not configured
   if (process.env.DISABLE_SSR === 'true' || !frontendPath) {
     return res.status(200).json({ message: 'API server running. Use /api endpoints.' });
@@ -253,15 +252,16 @@ app.use('*', async (req, res, next) => {
       return next();
     }
     const initialAuth = await fetchAuth(req)
-    const cached = await redis.get('html:'+_url)
+    // const cached = await redis.get('html:'+_url)
     // const cached = false
-    if(cached && !initialAuth) {
-      res.set('X-Cache', 'HIT')
-      return res.status(200).set({ 'Content-Type': 'text/html' }).end(cached);
-    }
+    // if(cached && !initialAuth) {
+    //   res.set('X-Cache', 'HIT')
+    //   return res.status(200).set({ 'Content-Type': 'text/html' }).end(cached);
+    // }
     // const csrOnlyRoutes = ['/admin']
 
     let render, template
+    let isAdmin = false
     // const isCsrOnly = csrOnlyRoutes.some(route => url.startsWith(route))
     // template = fs.readFileSync(templatePath, 'utf-8');
     // if (!isProd) {
@@ -276,7 +276,7 @@ app.use('*', async (req, res, next) => {
         )
         template = await vite.transformIndexHtml(url, template)
 
-        render = (await vite.ssrLoadModule('/src/entry-server.tsx')).render
+        render = (await vite.ssrLoadModule('/src/entry-server-admin.tsx')).render
     } else {
         template = fs.readFileSync(
             path.join(frontendPath, 'dist', 'client', 'src', 'mainAdmin.html'),
@@ -286,6 +286,7 @@ app.use('*', async (req, res, next) => {
             path.join(frontendPath, 'dist/server/admin.js')
         )).render
     } 
+    isAdmin = true
   } else {
       if (!isProd) {
           template = fs.readFileSync(
@@ -342,6 +343,10 @@ app.use('*', async (req, res, next) => {
 
     html = html.replaceAll('link rel="stylesheet"', `link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'"`)
 
+    if(isAdmin) {
+       res.status(200).set({ 'Content-Type': 'text/html' }).end(html);
+       return
+    }
     html = html.replace(
         '<!-- passdata -->',
         `<script>window.__INITIAL_DATA__ = ${JSON.stringify(passData)}</script>`
@@ -358,10 +363,10 @@ app.use('*', async (req, res, next) => {
       '<!-- postbody -->',
       `${initialPostBodyScript ?? ''}`
     )
-    if(shouldCacheHTML) {
-      redis.set("html:" + _url, html, "EX", 100)
-      res.set('X-Cache', "MISS")
-    }
+    // if(shouldCacheHTML) {
+    //   redis.set("html:" + _url, html, "EX", 100)
+    //   res.set('X-Cache', "MISS")
+    // }
     res.status(200).set({ 'Content-Type': 'text/html' }).end(html);
   } catch (e) {
     if (vite) vite.ssrFixStacktrace(e);

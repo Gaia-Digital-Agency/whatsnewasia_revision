@@ -14,6 +14,9 @@ import MobileMenu from "../../../components/front/MobileMenu"
 import SearchBar from "../../../components/front/SearchBar"
 import { getTemplateByUrl } from "../../../services/template.service"
 import { useHeaderContent } from "../../../context/HeaderContext"
+import DropDownCountry from "../../../components/front/DropDownCountry"
+import DropDownCity from "../../../components/front/DropDownCity"
+import DropDownRegion from "../../../components/front/DropDownRegion"
 
 
 
@@ -34,7 +37,7 @@ const MenuNav: React.FC<{menu: Category, menus: Category[]}> = ({menu, menus}) =
         if(e.currentTarget.classList.contains('is-active')) return
         gsap.to(e.target, {
             '--hover-width': '0%',
-            '--hover-color': '#FE0001',
+            '--hover-color': '#a07b4f',
             '--hover-text': '#101828'
             // '--hover-translate': '50%'
         })
@@ -43,8 +46,8 @@ const MenuNav: React.FC<{menu: Category, menus: Category[]}> = ({menu, menus}) =
         if(e.currentTarget.classList.contains('is-active')) return
         gsap.to(e.currentTarget, {
             '--hover-width': '100%',
-            '--hover-color': '#FE0001',
-            '--hover-text': '#FE0001'
+            '--hover-color': '#a07b4f',
+            '--hover-text': '#a07b4f'
             // '--hover-translate': '0%'
         })
     })
@@ -183,7 +186,7 @@ const Header: React.FC = () => {
             if(el.classList.contains('is-active')) return
             gsap.set(el, {
                 '--hover-width': '0%',
-                '--hover-color': '#FE0001',
+                '--hover-color': '#a07b4f',
                 '--hover-text': '#101828'
                 // '--hover-translate': '50%'
             })
@@ -222,8 +225,12 @@ const Header: React.FC = () => {
         <>
             <header className="relative top-0 left-0 right-0 z-[100] bg-white" ref={headerRef}>
                 <div className="container mx-auto py-6 flex justify-between items-center">
-                    <div className="logo-wrapper w-max">
+                    <div className="logo-wrapper w-max flex gap-x-0 md:gap-x-[20px] lg:gap-x-0 items-center">
                         <NavLogo url="/logo-header" to={toNav()} />
+
+                        <div className="dropdown-country hidden md:block lg:hidden">
+                            <DropDownCountry />
+                        </div>
                     </div>
                     <div className="icons-wrapper flex items-center gap-x-4">
                         <div className={`item flex-1 max-w-[320px] block ${actualRoute.country ? 'lg:hidden' : 'lg:block'}`}>
@@ -238,8 +245,15 @@ const Header: React.FC = () => {
 
 
                 <div className="location-wrapper nav-location-wrapper" ref={locationRef}>
-                    <div className={`inner container justify-between items-center mx-auto py-4 ${actualRoute.country ? 'hidden md:flex' : ''}`}>
-                        <div className="item">
+                    <div className={`inner container justify-between items-center mx-auto py-4 lg:flex flex ${(actualRoute.country && taxonomies.cities?.filter(city => (city.id_parent == actualRoute.country?.id)).length) ? 'md:flex' : 'md:hidden'}`}>
+                        <div className="flex md:hidden">
+                            <DropDownCountry />
+                        </div>
+                        <div className="md:flex hidden lg:hidden gap-x-[20px]">
+                            <DropDownCity />
+                            <DropDownRegion />
+                        </div>
+                        <div className="item lg:flex hidden w-full">
                             <NavLocation />
                         </div>
                         <div className={`item flex-1 hidden max-w-[320px] ${actualRoute.country ? 'lg:block' : 'lg:hidden'}`}>

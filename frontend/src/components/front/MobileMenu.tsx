@@ -30,7 +30,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({isModalOpen = false, closeModal}
         if(e.currentTarget.classList.contains('is-active')) return
         gsap.to(e.target, {
             '--hover-width': '0%',
-            '--hover-color': '#FE0001',
+            '--hover-color': '#a07b4f',
             '--hover-text': '#101828'
             // '--hover-translate': '50%'
         })
@@ -39,8 +39,8 @@ const MobileMenu: React.FC<MobileMenuProps> = ({isModalOpen = false, closeModal}
         if(e.currentTarget.classList.contains('is-active')) return
         gsap.to(e.currentTarget, {
             '--hover-width': '100%',
-            '--hover-color': '#FE0001',
-            '--hover-text': '#FE0001'
+            '--hover-color': '#a07b4f',
+            '--hover-text': '#a07b4f'
             // '--hover-translate': '0%'
         })
     })

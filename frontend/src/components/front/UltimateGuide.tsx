@@ -66,6 +66,7 @@ const UltimateGuide: React.FC<ComponentTemplateHomeProps> = ({preContent}) => {
     return (
         <>
         {
+            content &&
             !!content.filter(Boolean).length &&
             <>
             <Spacer />

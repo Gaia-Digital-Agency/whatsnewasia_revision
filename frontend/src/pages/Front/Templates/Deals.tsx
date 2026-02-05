@@ -341,6 +341,7 @@ const Deals: React.FC = () => {
         <>
             <Helmet>
                 <title>Deals - Whatsnew Asia</title>
+                <meta name="description" content="Whats's New Asia is the ultimate city guide for expats and travelers, featuring the best dining, events, schools, wellness, and travel in Asia" />
             </Helmet>
             <section className="py-12">
                 <div className="container">

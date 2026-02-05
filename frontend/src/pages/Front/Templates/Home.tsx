@@ -59,11 +59,17 @@ const HomeTemplate: React.FC = () => {
     const events = content.events ? content.events.articles : [0,0,0,0]
     const ultimateGuide = content.ultimateGuide ? content.ultimateGuide.articles : [0,0,0,0,0,0]
     const overseas = content.overseas ? content.overseas.articles : [0,0,0,0,0,0,0,0]
-    if(!isReady) return (
-        <>
+    const getDeepestLocation = () => {
+        if(actualRoute.region) return actualRoute.region.name
+        if(actualRoute.city) return actualRoute.city.name
+        if(actualRoute.country) return actualRoute.country.name
+        return 'Home'
+    }
+    const getHelmet = () => {
+        return (
             <Helmet>
-                <title>Home - Whatsnew Asia</title>
-                <meta name="description" content="What's New Asia is the ultimate city guide for expats and travelers, featuring the best dining, events, schools, wellness, and travel in Asia" />
+                <title>{getDeepestLocation()} - Whatsnew Asia</title>
+                <meta name="description" content="Whats's New Asia is the ultimate city guide for expats and travelers, featuring the best dining, events, schools, wellness, and travel in Asia" />
                 <link rel="canonical" href={SITE_URL} />
                 <meta property="og:type" content="website" />
                 <meta property="og:title" content="Home - Whatsnew Asia" />
@@ -71,20 +77,17 @@ const HomeTemplate: React.FC = () => {
                 <meta property="og:url" content={SITE_URL} />
                 <meta property="og:site_name" content="Whatsnew Asia" />
             </Helmet>
+        )
+    }
+
+    if(!isReady) return (
+        <>
+            {getHelmet()}
         </>
     )
     return (
         <>
-            <Helmet>
-                <title>Home - Whatsnew Asia</title>
-                <meta name="description" content="What's New Asia is the ultimate city guide for expats and travelers, featuring the best dining, events, schools, wellness, and travel in Asia" />
-                <link rel="canonical" href={SITE_URL} />
-                <meta property="og:type" content="website" />
-                <meta property="og:title" content="Home - Whatsnew Asia" />
-                <meta property="og:description" content="What's New Asia is the ultimate city guide for expats and travelers, featuring the best dining, events, schools, wellness, and travel in Asia" />
-                <meta property="og:url" content={SITE_URL} />
-                <meta property="og:site_name" content="Whatsnew Asia" />
-            </Helmet>
+            {getHelmet()}
             <HeroImage preContent={heroImage} />
             <Spacer />
             <div className="container">
