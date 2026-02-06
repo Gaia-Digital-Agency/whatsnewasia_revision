@@ -124,7 +124,7 @@ const NavLocation: React.FC = () => {
                     {/* <div className="nav-location-selector-wrapper flex items-center"> */}
                         <div className="arrow-left arrow-wrapper" ref={prevRef}>
                             <div className="arrow">
-                                <img src="/images/icons/chevron-left.svg" alt="" />
+                                <img src="/images/icons/right-chevron.svg" alt="" />
                             </div>
                         </div>
                         <Swiper
