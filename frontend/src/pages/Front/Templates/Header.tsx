@@ -264,10 +264,14 @@ const Header: React.FC = () => {
                     <div className="line bg-black h-[1px] w-full"></div>
 
                     <div className="inner container mx-auto py-4 nav-category-wrapper">
-                        <div className="menus-wrapper flex gap-x-4 md:gap-x-6" ref={categoryRef}>
-                            {taxonomies.categories?.filter(cat => (headerMenus?.map((ca: any) => (ca.linkCategory))?.includes(cat.id)))?.map((menu: Category) => <MenuNav menu={menu} menus={headerMenus} key={`header-menu-${menu.id}`} />)}
+                        <div className="menus-wrapper flex justify-between items-center" ref={categoryRef}>
+                            <div className="menus flex gap-x-4 md:gap-x-6">
+                                {taxonomies.categories?.filter(cat => (headerMenus?.map((ca: any) => (ca.linkCategory))?.includes(cat.id)))?.map((menu: Category) => <MenuNav menu={menu} menus={headerMenus} key={`header-menu-${menu.id}`} />)}
+                            </div>
+                            <div className="arrow-wrapper">
+                                <div className="arrow" ref={arrowRef}></div>
+                            </div>
                         </div>
-                        <div className="arrow" ref={arrowRef}></div>
                     </div>
                     
                     <div className="line bg-black h-[1px] w-full"></div>
