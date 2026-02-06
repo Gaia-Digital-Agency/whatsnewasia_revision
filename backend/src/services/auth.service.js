@@ -375,6 +375,14 @@ export default {
         return res.status(404).json({ message: "Profile picture not found" });
       }
 
+      // Try GCS first, fallback to local file
+      const imageUrl = process.env.IMAGE_URL;
+      if (imageUrl) {
+        const gcsUrl = `${imageUrl}/profile_picture/${user.profile_picture}`;
+        return res.redirect(gcsUrl);
+      }
+
+      // Fallback: serve from local disk
       const filePath = path.join(
         __dirname,
         "../../uploads/profile_picture",
@@ -388,7 +396,7 @@ export default {
       }
 
       // Set appropriate headers
-      res.setHeader("Content-Type", "image/jpeg"); // atau sesuai dengan mimetype
+      res.setHeader("Content-Type", "image/jpeg");
       res.setHeader(
         "Content-Disposition",
         `inline; filename="${user.profile_picture_original_name}"`

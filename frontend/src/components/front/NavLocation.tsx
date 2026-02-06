@@ -39,15 +39,15 @@ const NavLocation: React.FC = () => {
         }
     }, [actualRoute])
 
-    useEffect(() => {
-        setTimeout(() => {
-            if(swiperRef.current) {
-                swiperRef.current.swiper.init()
-                // swiperRef.current.swiper.width = 100
-                // swiperRef.current.swiper
-            }
-        }, 1000)
-    }, [])
+    // useEffect(() => {
+    //     // setTimeout(() => {
+    //         if(swiperRef.current) {
+    //             swiperRef.current.swiper.init()
+    //             // swiperRef.current.swiper.width = 100
+    //             // swiperRef.current.swiper
+    //         }
+    //     // }, 1000)
+    // }, [])
 
     const changeCountryHandler = (country: string | number) => {
         if(country == '') {
@@ -124,12 +124,11 @@ const NavLocation: React.FC = () => {
                     {/* <div className="nav-location-selector-wrapper flex items-center"> */}
                         <div className="arrow-left arrow-wrapper" ref={prevRef}>
                             <div className="arrow">
-                                <img src="/images/icons/right-chevron.svg" alt="" />
+                                <img src="/images/icons/chevron-left.svg" alt="" />
                             </div>
                         </div>
                         <Swiper
                             slidesPerView={3}
-                            init={true}
                             spaceBetween={15}
                             ref={swiperRef}
                             modules={[Navigation]}
@@ -155,7 +154,7 @@ const NavLocation: React.FC = () => {
                         </Swiper>
                         <div className="arrow-right arrow-wrapper" ref={nextRef}>
                             <div className="arrow">
-                                <img src="/images/icons/right-chevron.svg" alt="" />
+                                {/* <img src="/images/icons/chevron-left.svg" alt="" /> */}
                             </div>
                         </div>
                     {/* </div> */}
