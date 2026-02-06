@@ -1067,7 +1067,7 @@ article .content-wrapper img {
   position: relative;
 }
 
-.parent-nav-scroll-overflow .arrow {
+.parent-nav-scroll-overflow .arrow, .country-select-wrapper .arrow {
   content: "";
   width: 18px;
   /* display: none!important; */
@@ -1078,11 +1078,11 @@ article .content-wrapper img {
   background-image: url("/images/icons/right-chevron.svg");
   background-size: contain;
   background-repeat: no-repeat;
-  position: absolute;
+  /* position: absolute; */
   /* display: none; */
-  right: -1rem;
+  /* right: -1rem;
   top: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%); */
   cursor: pointer;
 }
 
@@ -1101,7 +1101,13 @@ article .content-wrapper img {
       rotate: 180deg;
     }
   }
+  &.arrow-left {
+    .arrow {
+      rotate: 180deg;
+    }
+  }
   img {
+    display: none;
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
