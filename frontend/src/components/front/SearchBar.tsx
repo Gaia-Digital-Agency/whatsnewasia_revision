@@ -39,7 +39,7 @@ const SearchBar: React.FC<SearchBarProps> = ({search, setSearch}) => {
                 })
             } else {
                 gsap.set(formEl, {
-                    width: 'auto'
+                    width: '270px'
                 })
             }
         }
@@ -77,7 +77,7 @@ const SearchBar: React.FC<SearchBarProps> = ({search, setSearch}) => {
         <>
         <div className="input-wrapper relative max-w-[320px] border border-[#eaeaea] w-full" onClick={clickHandler}>
             <form action="#" onSubmit={submitHandler} ref={formRef} className="overflow-hidden">
-                <input type="text" suppressHydrationWarning={true} value={search} onChange={searchHandler} className="p-4 w-full placeholder:text-[#b3b3b3]" placeholder="Search for..." onBlur={blurHandler} />
+                <input type="text" suppressHydrationWarning={true} value={search} onChange={searchHandler} className="p-4 w-full text-front-nav-header font-medium placeholder:text-[#b3b3b3]" placeholder="Search for..." onBlur={blurHandler} />
             </form>
             <SearchIcon className="absolute right-4 top-1/2 -translate-y-1/2" />
         </div>
