@@ -10,6 +10,7 @@ import Button from "../../../components/front/Button";
 import { useContent } from "../../../context/ContentContext";
 import { useRoute } from "../../../context/RouteContext";
 import { Helmet } from "react-helmet-async";
+import useAdvertisement from "../../../hooks/useAdvertisement";
 
 const ArticleCard: React.FC<{article: ArticleProps & {createdAt?: string}}> = ({article}) => {
     const {getPermalink, getFeaturedImageUrl} = useArticle()
@@ -68,6 +69,7 @@ const RenderArticle: React.FC<{content?: ArticleProps[], q?: string | null}> = (
 const Search: React.FC = () => {
     const {initialData} = useContent()
     const {clientChange} = useRoute()
+    const {slot} = useAdvertisement()
     // const article = useArticle()
     const [content, setContent] = useState<ArticleProps[]>(initialData?.articles ?? [])
     const [totalPage, setTotalPage] = useState<number>(initialData?.pagination?.totalPages ?? 1)
@@ -108,7 +110,7 @@ const Search: React.FC = () => {
             </Helmet>
             <section className="py-12">
                 <div className="container">
-                    <Advertisement />
+                    <Advertisement slot={slot?.home} />
                 </div>
                 <div className="container py-12">
                     <RenderArticle content={content} q={q} />

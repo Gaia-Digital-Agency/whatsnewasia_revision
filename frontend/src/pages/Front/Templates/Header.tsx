@@ -38,7 +38,7 @@ const MenuNav: React.FC<{menu: Category, menus: Category[]}> = ({menu, menus}) =
         gsap.to(e.target, {
             '--hover-width': '0%',
             '--hover-color': '#a07b4f',
-            '--hover-text': '#101828'
+            '--hover-text': '#000'
             // '--hover-translate': '50%'
         })
     })
@@ -61,7 +61,7 @@ const MenuNav: React.FC<{menu: Category, menus: Category[]}> = ({menu, menus}) =
     return (
         <>
         <div className="menu" ref={menuRef}>
-            <NavLink key={menu.id} relative={'route'} onMouseLeave={onMouseLeaveHandler} onMouseEnter={onMouseEnterHandler} className={`menu-link text-front-body-big flex-1 text-nowrap uppercase text-black${isActive() ? ' is-active' : ''}`} to={generateTo(menu.slug_title, actualRoute)}>{menu.title}</NavLink>
+            <NavLink key={menu.id} relative={'route'} onMouseLeave={onMouseLeaveHandler} onMouseEnter={onMouseEnterHandler} className={`menu-link text-front-nav-header font-medium flex-1 text-nowrap uppercase text-black${isActive() ? ' is-active' : ''}`} to={generateTo(menu.slug_title, actualRoute)}>{menu.title}</NavLink>
         </div>
         </>
     )
@@ -187,7 +187,7 @@ const Header: React.FC = () => {
             gsap.set(el, {
                 '--hover-width': '0%',
                 '--hover-color': '#a07b4f',
-                '--hover-text': '#101828'
+                '--hover-text': '#000'
                 // '--hover-translate': '50%'
             })
         })

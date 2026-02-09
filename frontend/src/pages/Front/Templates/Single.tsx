@@ -24,6 +24,7 @@ const API_URL = import.meta.env.VITE_WHATSNEW_BACKEND_URL || ''
 const IMAGE_URL = import.meta.env.VITE_IMAGE_URL || API_URL
 import { useAuth } from "../../../context/AuthContext"
 import "swiper/swiper-bundle.css";
+import useAdvertisement from "../../../hooks/useAdvertisement"
 
 // interface AdditionalArticleProps extends ArticleProps {
 //     featured_image_full_url: string,
@@ -122,6 +123,7 @@ const Single: React.FC = () => {
     const {initialData} = useContent()
     const {actualRoute, clientChange} = useRoute()
     const {getDeepestLocation, getFeaturedImageUrl} = useArticle()
+    const {slot} = useAdvertisement()
     // const {availableCategories} = useOutletContext<AvailableCategoriesProps>()
     // const {locations} = useOutletContext<LocationsContextProps>()
     const [content, setContent] = useState<ArticleApiResponseProps | undefined>(initialData?.article ?? undefined)
@@ -319,7 +321,7 @@ const Single: React.FC = () => {
                     <div className="md:col-span-3 col-span-12">
                         
                         {renderEditButton()}
-                        <Advertisement ratio="vertical" />
+                        <Advertisement ratio="vertical" slot={slot?.article?.sidebar} />
                         <div className="spacer py-6"></div>
                         <p className="font-serif text-front-article-title">Discover More</p>
                         <div className="spacer py-2"></div>

@@ -14,6 +14,7 @@ import { Tag } from "../../../types/tags.type"
 // import { getAllTags } from "../../../services/tags.service"
 import { Helmet } from "react-helmet-async"
 import useArticle from "../../../hooks/useArticle"
+import useAdvertisement from "../../../hooks/useAdvertisement"
 
 // type PagesProps = {page: number, currentPage: number, onClick: (pag: number) => void}
 type PaginationProps = {page: Array<string | number> | number | string, currentPage: number, onClick: (pag: number) => void}
@@ -98,6 +99,7 @@ const Overseas: React.FC<{isTrending?: boolean}> = ({isTrending = false}) => {
     const {actualRoute} = useRoute()
     const {taxonomies} = useTaxonomies()
     const {initialData} = useContent()
+    const {slot} = useAdvertisement()
     const [content, setContent] = useState<ArticleProps[]>(initialData?.articles ?? [])
     const [title, setTitle] = useState<string>()
     const [description, setDescription] = useState<string>()
@@ -237,7 +239,7 @@ const Overseas: React.FC<{isTrending?: boolean}> = ({isTrending = false}) => {
             <section className="py-12">
                 <div className="container">
                     <div className="ads-wrapper mb-12">
-                        <Advertisement />
+                        <Advertisement slot={slot?.home} />
                     </div>
                     <div className="grid grid-cols-12 mb-12">
                         <div className="md:col-span-10 md:col-start-2 col-span-12">

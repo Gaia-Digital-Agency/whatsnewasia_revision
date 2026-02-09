@@ -21,6 +21,7 @@ import "rsuite/Radio/styles/index.css";
 import { Link, useLocation, useSearchParams } from "react-router";
 import { Category } from "../../../types/category.type";
 import pkg from "../../../lib/utils/Helmet"
+import useAdvertisement from "../../../hooks/useAdvertisement";
 const {Helmet} = pkg
 const API_URL = import.meta.env.VITE_WHATSNEW_BACKEND_URL
 const IMAGE_URL = import.meta.env.VITE_IMAGE_URL || API_URL
@@ -93,6 +94,7 @@ const Events: React.FC = () => {
     // const [theCategory, setTheCategory] = useState<Category>()
     const {actualRoute, getLocationRouteUrl} = useRoute()
     const {taxonomies} = useTaxonomies()
+    const {slot} = useAdvertisement()
     const [searchParams, setSearchParams] = useSearchParams()
     const [availableSubCat, setAvailableSubCat] = useState<Category[]>() 
     const CATEGORY_SLUG = 'events'
@@ -388,7 +390,7 @@ const Events: React.FC = () => {
             </Helmet>
             <section>
                 <div className="container py-16">
-                    <Advertisement />
+                    <Advertisement slot={slot?.home} />
 
                     <div className="grid grid-cols-12 py-12" ref={contentWrapperRef}>
                         <div className="lg:col-span-6 col-span-12 lg:col-start-4 text-center">

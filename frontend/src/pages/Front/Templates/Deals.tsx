@@ -16,6 +16,7 @@ import { useTime } from "../../../context/TimeContext"
 import { useTaxonomies } from "../../../context/TaxonomyContext"
 import { Category } from "../../../types/category.type"
 import useArticle from "../../../hooks/useArticle"
+import useAdvertisement from "../../../hooks/useAdvertisement"
 import {DateRangePicker} from 'rsuite'
 import 'rsuite/DateRangePicker/styles/index.css';
 import pkg from "../../../lib/utils/Helmet"
@@ -191,6 +192,7 @@ const Deals: React.FC = () => {
     const [totalPages, setTotalPages] = useState<number>(1)
     const [tags, setTags] = useState<Tag[]>()
     const {initialData} = useTime()
+    const {slot} = useAdvertisement()
     const CATEGORY_SLUG = 'deals'
     const theCategory = taxonomies?.categories?.find(cat => (cat.slug_title == CATEGORY_SLUG))
 
@@ -346,7 +348,7 @@ const Deals: React.FC = () => {
             <section className="py-12">
                 <div className="container">
                     <div className="ads-wrapper mb-12">
-                        <Advertisement />
+                        <Advertisement slot={slot?.home} />
                     </div>
                     <div className="grid grid-cols-12 mb-12">
                         <div className="md:col-span-10 md:col-start-2 col-span-12">

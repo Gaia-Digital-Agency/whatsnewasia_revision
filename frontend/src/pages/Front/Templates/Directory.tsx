@@ -17,6 +17,7 @@ import useArticle from "../../../hooks/useArticle"
 import pkg from "../../../lib/utils/Helmet"
 const {Helmet} = pkg
 import { getCategoryWithFields } from "../../../services/category.service"
+import useAdvertisement from "../../../hooks/useAdvertisement"
 
 const API_URL = import.meta.env.VITE_WHATSNEW_BACKEND_URL
 
@@ -116,6 +117,7 @@ const Directory: React.FC<{isTrending?: boolean}> = ({isTrending = false}) => {
     const [parentCat, setParentCat] = useState<Category | undefined>(undefined)
     const [subCategories, setSubCategories] = useState<Category[] | undefined>([])
     const [tags, setTags] = useState<Tag[]>()
+    const {slot} = useAdvertisement()
     // const [currentTag, setCurrentTag] = useState()
 
     const [searchParams, setSearchParams] = useSearchParams()
@@ -372,7 +374,7 @@ const Directory: React.FC<{isTrending?: boolean}> = ({isTrending = false}) => {
             <section className="py-12">
                 <div className="container">
                     <div className="ads-wrapper mb-12">
-                        <Advertisement />
+                        <Advertisement slot={slot?.home} />
                     </div>
                     <div className="grid grid-cols-12 mb-12">
                         <div className="md:col-span-10 md:col-start-2 col-span-12">

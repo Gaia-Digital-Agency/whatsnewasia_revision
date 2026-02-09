@@ -47,8 +47,8 @@ const Footer: React.FC = () => {
                                     Jl. RS Fatmawati No 188 Blok A Cipete Jakarta Selatan 12420
                                 </p>
                                 <p className="text-front-body-big">
-                                    Hp. +62813-8250-2771 <br />
-                                    Email. admin@whatsnewindonesia.com
+                                    Hp. <Link to={'tel:6281382502771'} target="_blank">+62813-8250-2771</Link> <br />
+                                    Email. <Link to={'mailto:admin@whatsnewindonesia.com'} target="_blank">admin@whatsnewindonesia.com</Link>
                                 </p>
                             </div>
                         </div>

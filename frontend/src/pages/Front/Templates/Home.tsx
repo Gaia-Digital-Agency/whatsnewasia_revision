@@ -13,6 +13,7 @@ import { useRoute } from "../../../context/RouteContext"
 import { getTemplateByUrl } from "../../../services/template.service"
 import { HomeTemplate as DefaultHomeTemplate } from "../../../lib/map/TemplatesMap"
 import pkg from "../../../lib/utils/Helmet"
+import useAdvertisement from "../../../hooks/useAdvertisement"
 const {Helmet} = pkg
 
 const SITE_URL = import.meta.env.VITE_SITE_URL || ''
@@ -25,6 +26,7 @@ const HomeTemplate: React.FC = () => {
     const [content, setContent] = useState<any>(initialData?.template ?? {})
     const [isReady, setIsReady] = useState<boolean>(true)
     const {actualRoute, clientChange} = useRoute()
+    const {slot} = useAdvertisement()
     // const isV2 = searchParams.get('v2')
     const isLocation = actualRoute?.country || actualRoute?.city || actualRoute?.region
     useEffect(() => {
@@ -91,7 +93,7 @@ const HomeTemplate: React.FC = () => {
             <HeroImage preContent={heroImage} />
             <Spacer />
             <div className="container">
-                <Advertisement />
+                <Advertisement slot={slot?.home} />
             </div>
             
             <Trending preContent={trending} />

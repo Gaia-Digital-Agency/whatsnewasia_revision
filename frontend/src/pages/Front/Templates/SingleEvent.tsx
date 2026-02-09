@@ -12,7 +12,6 @@ import { Pagination } from "swiper/modules"
 import { useTaxonomies } from "../../../context/TaxonomyContext"
 import { Tag } from "../../../types/tags.type"
 import { getTagByIDs } from "../../../services/tags.service"
-import { formatPublished } from "../../../lib/utils/format"
 import Newsletter from "../../../components/front/Newsletter"
 import Button from "../../../components/front/Button"
 import { getArticleByFields } from "../../../services/article.service"
@@ -27,6 +26,8 @@ const SITE_URL = import.meta.env.VITE_SITE_URL || ''
 const API_URL = import.meta.env.VITE_WHATSNEW_BACKEND_URL || ''
 const IMAGE_URL = import.meta.env.VITE_IMAGE_URL || API_URL
 import "swiper/swiper-bundle.css";
+import useAdvertisement from "../../../hooks/useAdvertisement"
+import { useIsClient } from "../../../hooks/useIsClient"
 
 const DiscoverArticle: React.FC<{article: ArticleProps}> = ({article}) => {
     const {getCategoryById} = useTaxonomies()
@@ -125,7 +126,8 @@ const EditButton: React.FC<{article: ArticleApiResponseProps | undefined}> = ({a
 const SingleEvent: React.FC = () => {
     const {initialData} = useContent()
     const {setNotification} = useNotification()
-    const {actualRoute} = useRoute()
+    const {actualRoute, clientChange} = useRoute()
+    const {slot} = useAdvertisement()
     const {getFeaturedImageUrl} = useArticle()
     const [content, setContent] = useState<ArticleApiResponseProps | undefined>(initialData?.article ?? undefined)
     const [relatedArticle, setRelatedArticle] = useState<ArticleProps[]>(initialData?.related ?? [])
@@ -134,8 +136,10 @@ const SingleEvent: React.FC = () => {
     // const [isClient, setIsClient] = useState<boolean>(false)
     const [tags, setTags] = useState<Tag[]>([])
     const {userDetails} = useAuth()
+    const {isClient} = useIsClient()
 
     const renderEditButton = () => {
+        if(!isClient) return <></>
         if(userDetails?.user_level == 'super_admin') {
             return <EditButton article={content}  />
         }
@@ -150,8 +154,14 @@ const SingleEvent: React.FC = () => {
             }
         }
     }
+    
+    useEffect(() => {
+        if(!clientChange) return
+        console.log(actualRoute.article)
+    }, [actualRoute])
 
     useEffect(() => {
+        if(!clientChange) return;
         (async () => {
             try {
                 if(content?.tags?.length) {
@@ -191,7 +201,7 @@ const SingleEvent: React.FC = () => {
                 console.log(e)
             }
         })()
-    }, [content])
+    }, [content, clientChange])
 
     useEffect(() => {
         setCurrentPage(window.location.href)
@@ -205,9 +215,9 @@ const SingleEvent: React.FC = () => {
         }
     }
     const renderTags = () => {
-        if(tags.length) {
+        if(tags && tags?.length) {
             return tags.map(tag => (
-                <div className="box px-8 py-2 bg-[#EEEEEE] uppercase">
+                <div className="box px-8 py-2 bg-[#EEEEEE] uppercase" key={`tag-${tag.id}`}>
                     {tag.name}
                 </div>
             ))
@@ -222,11 +232,9 @@ const SingleEvent: React.FC = () => {
             }
             return filtered?.map(article => {
                 return (
-                    <>
-                        <div className="discover-article-wrapper mb-6">
-                            <DiscoverArticle article={article} />
-                        </div>
-                    </>
+                    <div className="discover-article-wrapper mb-6" key={`discover-${article.id}`}>
+                        <DiscoverArticle article={article} />
+                    </div>
                 )
             })
         }
@@ -253,15 +261,15 @@ const SingleEvent: React.FC = () => {
                 <div className="container">
                     <div className="grid grid-cols-12 lg:gap-x-10 py-12">
                         <div className="lg:col-span-8 lg:col-start-3 col-span-12 mb-12">
-                            <Advertisement />
+                            <Advertisement slot={slot?.home} />
                         </div>
 
                         <div className="col-span-12 mb-6">
                             <div className="flex justify-between items-center">
                                 <div className="item">
-                                    <p className="text-[#222222]">
+                                    {/* <p className="text-[#222222]">
                                         {formatPublished(content?.updatedAt)}
-                                    </p>
+                                    </p> */}
                                 </div>
                                 <div className="item">
                                     <ShareIcon className="cursor-pointer" onClick={shareClickHandler} />
@@ -286,7 +294,7 @@ const SingleEvent: React.FC = () => {
                                 <h1 className="text-front-article-title font-serif">{content?.title}</h1>
                             </div>
                             <div className="date-information mb-8">
-                                {content?.meta_data?.start_date || content?.meta_data?.start_time &&
+                                {(content?.meta_data?.start_date || content?.meta_data?.start_time) &&
                                 <div className="title mb-4">
                                     <p className="text-front-subtitle font-serif">Date & Time</p>
                                 </div>
@@ -296,10 +304,10 @@ const SingleEvent: React.FC = () => {
                                     <div className="item flex gap-x-4 mb-2">
                                         <div className="icon">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="15" height="14" viewBox="0 0 15 14" fill="none">
-                                                <path d="M1.125 4.14229C1.125 3.17103 1.91236 2.38367 2.88362 2.38367H12.1164C13.0877 2.38367 13.875 3.17103 13.875 4.14229V11.6164C13.875 12.5877 13.0877 13.375 12.1164 13.375H2.88362C1.91236 13.375 1.125 12.5877 1.125 11.6164V4.14229Z" stroke="#7F7F7F" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round"/>
-                                                <path d="M3.98267 0.624878V3.70246" stroke="#7F7F7F" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round"/>
-                                                <path d="M11.0173 0.624878V3.70246" stroke="#7F7F7F" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round"/>
-                                                <path d="M3.76294 5.90027H11.2371" stroke="#7F7F7F" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round"/>
+                                                <path d="M1.125 4.14229C1.125 3.17103 1.91236 2.38367 2.88362 2.38367H12.1164C13.0877 2.38367 13.875 3.17103 13.875 4.14229V11.6164C13.875 12.5877 13.0877 13.375 12.1164 13.375H2.88362C1.91236 13.375 1.125 12.5877 1.125 11.6164V4.14229Z" stroke="#7F7F7F" strokeWidth="0.9" strokeLinecap="round" strokeLinejoin="round"/>
+                                                <path d="M3.98267 0.624878V3.70246" stroke="#7F7F7F" strokeWidth="0.9" strokeLinecap="round" strokeLinejoin="round"/>
+                                                <path d="M11.0173 0.624878V3.70246" stroke="#7F7F7F" strokeWidth="0.9" strokeLinecap="round" strokeLinejoin="round"/>
+                                                <path d="M3.76294 5.90027H11.2371" stroke="#7F7F7F" strokeWidth="0.9" strokeLinecap="round" strokeLinejoin="round"/>
                                             </svg>
                                         </div>
                                         <div className="text">
@@ -312,7 +320,7 @@ const SingleEvent: React.FC = () => {
                                     <div className="item flex gap-x-4">
                                         <div className="icon">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 15 15" fill="none">
-                                                <g clip-path="url(#clip0_670_5700)">
+                                                <g clipPath="url(#clip0_670_5700)">
                                                     <path d="M8.74994 0.625H6.24994C5.90619 0.625 5.62494 0.90625 5.62494 1.25C5.62494 1.59375 5.90619 1.875 6.24994 1.875H8.74994C9.09369 1.875 9.37494 1.59375 9.37494 1.25C9.37494 0.90625 9.09369 0.625 8.74994 0.625ZM7.49994 8.75C7.84369 8.75 8.12494 8.46875 8.12494 8.125V5.625C8.12494 5.28125 7.84369 5 7.49994 5C7.15619 5 6.87494 5.28125 6.87494 5.625V8.125C6.87494 8.46875 7.15619 8.75 7.49994 8.75ZM11.8937 4.61875L12.3624 4.15C12.5999 3.9125 12.6062 3.51875 12.3624 3.275L12.3562 3.26875C12.1124 3.025 11.7249 3.03125 11.4812 3.26875L11.0124 3.7375C10.0437 2.9625 8.82494 2.5 7.49994 2.5C4.49994 2.5 1.94994 4.975 1.87494 7.975C1.79369 11.15 4.33744 13.75 7.49994 13.75C10.6124 13.75 13.1249 11.2312 13.1249 8.125C13.1249 6.8 12.6624 5.58125 11.8937 4.61875ZM7.49994 12.5C5.08119 12.5 3.12494 10.5437 3.12494 8.125C3.12494 5.70625 5.08119 3.75 7.49994 3.75C9.91869 3.75 11.8749 5.70625 11.8749 8.125C11.8749 10.5437 9.91869 12.5 7.49994 12.5Z" fill="#7F7F7F"/>
                                                 </g>
                                                 <defs>
@@ -352,7 +360,7 @@ const SingleEvent: React.FC = () => {
                         <div className="lg:col-span-3 col-span-12">
                             {renderEditButton()}
                             <div className="ads-wrapper mb-12">
-                                <Advertisement ratio="vertical" />
+                                <Advertisement slot={slot?.article?.sidebar} ratio="vertical" />
                             </div>
                             {renderDiscover()}
                         </div>
