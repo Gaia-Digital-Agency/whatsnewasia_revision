@@ -6,7 +6,8 @@ const fetchRouteData = async (url, taxonomies, ip = '::1') => {
   async function checkArticleStatus(slug) {
     const getArticle = await fetchArticleData(slug, ip)
     if(getArticle.articles?.length) {
-      return {article: getArticle.articles[0], isArticle: true, category: ''}
+      console.log(getArticle.articles)
+      return {article: getArticle.articles[0], isArticle: true, category: getArticle.articles[0].slug_category}
     }
     return {isArticle: false, category: null};
   }
