@@ -1,53 +1,58 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import useAdvertisement from "../../hooks/useAdvertisement";
 
 type AdvertisementProps = {
-    ratio?: 'vertical' | 'horizontal'
+    ratio?: "vertical" | "horizontal",
+    slot?: string
 }
 
 declare global {
     interface Window {
-        adsbygoogle?: any
+        adsbygoogle?: any[]
     }
 }
 
-
-const Advertisement: React.FC<AdvertisementProps> = ({ratio = 'horizontal'}) => {
-    const [isClient, setIsClient] = useState<boolean>(false)
-
-
+const Advertisement: React.FC<AdvertisementProps> = ({ ratio = "horizontal", slot = null }) => {
+    const [ready, setReady] = useState(false)
+    const {clientId} = useAdvertisement()
+    const wrapperRef = useRef<HTMLElement>(null)
+    const adRef = useRef<HTMLModElement>(null)
     useEffect(() => {
-        if(!isClient) return
-        const ads = document.querySelectorAll('.adsbygoogle')
-
-        ads.forEach(ad => {
-            if(ad.getAttribute('data-adsbygoogle-status') !== 'done') {
-                (window.adsbygoogle = window.adsbygoogle || []).push({});
-            }
-        })
-    }, [isClient]);
-
-    useEffect(() => {
-        setIsClient(true)
+        if(slot) {
+            setReady(true)
+        }
     }, [])
 
+
+    useEffect(() => {
+        if(!ready || !adRef.current || !slot || !wrapperRef.current) return
+        // wrapperRef.current.style.display = 'block'
+        // adRef.current.dataset.adSlot = slot
+        // adRef.current.dataset.adClient = clientId
+        // adRef.current.dataset.fullWidthResponsive = 'true'
+        // adRef.current.dataset.fullHeightResponsive = 'true'
+        adRef.current.dataset.adFormat = 'auto'
+        adRef.current.style.display = 'block'
+        // adRef.current.dataset.adTest = 'on'
+        // window.addEventListener('load', () => {
+        ;(window.adsbygoogle = window.adsbygoogle || []).push({});
+        // })
+    }, [ready])
     return (
-        <>
-            <section>
-                <div className="">
-                    <div className={`ads relative w-full bg-[#d9d9d9] ${ratio == 'vertical' ? 'pt-[260%]' : 'pt-[16%]'}`}>
-                        <ins 
-                        className="adsbygoogle absolute top-0 w-full h-full"
-                        style={{display: 'block'}}
-                        data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
-                        data-ad-slot="1"
-                        ></ins>
-                        {/* <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-                            <p className="text-front-small font-semibold text-front-black">ADS PLACEMENT</p>
-                        </div> */}
-                    </div>
-                </div>
-            </section>
-        </>
+        <section ref={wrapperRef}>
+            <div className={`relative w-full ${ready ? '' : 'bg-[#d9d9d9]'} ${ratio === "vertical" ? "pt-[600px]" : "pt-[16%]"}`}>
+                {/* {ready && */}
+                    <ins
+                        ref={adRef}
+                        style={{display: "none"}}
+                        data-ad-slot={slot}
+                        data-ad-client={clientId}
+                        data-ad-format="auto"
+                        className="absolute adsbygoogle inset-0 h-full"
+                    />
+                {/* } */}
+            </div>
+        </section>
     )
 }
 
