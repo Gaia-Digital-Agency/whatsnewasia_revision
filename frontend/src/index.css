@@ -64,6 +64,8 @@ layer(base);
   --text-front-body-big--line-height: var(--text-front-body-big--line-height);
   --text-front-body: var(--text-front-body);
   --text-front-body--line-height: var(--text-front-body--line-height);
+  --text-front-nav-header: var(--text-front-nav-header);
+  --text-front-nav-header--line-height: var(--text-front-nav-header--line-height);
   --text-front-small: var(--text-front-small);
   --text-front-small--line-height: var(--text-front-small--line-height);
 
@@ -337,6 +339,8 @@ layer(base);
     --text-front-body-big: 20px;
     --text-front-body-big--line-height: 1.4;
     --text-front-body: 18px;
+    --text-front-nav-header: 15px;
+    --text-front-nav-header--line-height: 1;
     --text-front-body--line-height: 1;
     --text-front-small: 16px;
     --text-front-small--line-height: 1;
@@ -462,6 +466,14 @@ layer(base);
   input[type="time"]::-webkit-calendar-picker-indicator {
     display: none;
     -webkit-appearance: none;
+  }
+  .container {
+    @media(width >= 425px) {
+      max-width: none;
+    }
+    @media(width >= 375px) {
+      max-width: none;
+    }
   }
   @media (width >= 1280px) {
     .container, .md\:container {
@@ -1115,10 +1127,14 @@ article .content-wrapper img {
     height: 10px;
   }
 }
+.desktop-country-nav {
+  @apply text-front-nav-header font-medium;
+}
 
 .dropdown-country-wrapper {
   .dropdown-country-nav {
     padding-left: 20px;
+    @apply text-front-nav-header font-medium;
 
     &.dropdown-country-input {
       position: relative;
@@ -1271,16 +1287,29 @@ header .menus-wrapper .menu-link.is-active {
   border-left: 6px solid var(--color-front-red);
 }
 
-article .content-wrapper p {
-  line-height: 1.5;
-}
-article .content-wrapper h1,
-article .content-wrapper h2,
-article .content-wrapper h3,
-article .content-wrapper h4,
-article .content-wrapper h5,
-article .content-wrapper h6 {
-  line-height: 2.5;
+article {
+  .content-wrapper {
+    p {
+      /* font-size: ; */
+      font-size: 18px;
+      line-height: 1.5;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      line-height: 2.5;
+    }
+    h1 {
+      font-size: 28px;
+    }
+    h2 {
+      font-size: 24px;
+    }
+    h3 {
+      font-size: 22px;
+    }
+    h4 {
+      font-size: 20px;
+    }
+  }
 }
 
 #hero-article .swiper .image-container {
@@ -1321,19 +1350,24 @@ article .content-wrapper h6 {
 }
 
 .ql-size-small {
-  font-size: var(--text-front-small);
+  font-size: inherit;
+  /* font-size: var(--text-front-small); */
 }
 .ql-size-normal {
-  font-size: var(--text-front-body);
+  font-size: inherit;
+  /* font-size: var(--text-front-body); */
 }
 .ql-size-large {
-  font-size: var(--text-front-body-big);
+  font-size: inherit;
+  /* font-size: var(--text-front-body-big); */
 }
 .ql-size-larger {
-  font-size: var(--text-front-subtitle);
+  font-size: inherit;
+  /* font-size: var(--text-front-subtitle); */
 }
 .ql-size-huge {
-  font-size: var(--text-front-article-title);
+  font-size: inherit;
+  /* font-size: var(--text-front-article-title); */
 }
 
 .before-dash::before {
@@ -1412,4 +1446,14 @@ article .content-wrapper li {
 
 article .content-wrapper {
   font-size: var(--text-front-body-big);
+}
+
+#events .container > .grid {
+  overflow: visible hidden;
+  @media(min-width: 768px) {
+    overflow: hidden visible;
+  }
+  @media(min-width: 1024px) {
+    overflow: hidden visible;
+  }
 }
