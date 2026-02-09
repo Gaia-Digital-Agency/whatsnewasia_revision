@@ -50,7 +50,7 @@ const About: React.FC = () => {
                 </div>
                 <div className="md:col-span-6 col-span-12 md:order-2 order-1">
                     <div className="image-wrapper">
-                        <Image url={`${IMAGE_URL}/${content?.image?.url ?? ''}`} alt={content?.image?.alt ?? undefined} fit="contain" noRatio />
+                        <Image url={`${IMAGE_URL}/${content?.image?.url ?? ''}`} alt={content?.image?.alt ?? undefined} fit="contain" ratio="62.5%" />
                     </div>
                 </div>
             </div>
