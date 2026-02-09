@@ -11,10 +11,12 @@ import { useNavigationPrompt } from "../../hooks/useNavigationPrompt";
 import Button from "../../components/ui/button/Button";
 import { useNotification } from "../../context/NotificationContext";
 import TextArea from "../../components/form/input/TextArea";
+import Input from "../../components/form/input/InputField";
 const API_URL = import.meta.env.VITE_WHATSNEW_BACKEND_URL;
 
 type SettingsProps<T> = {
   content: T,
+  url: string,
   isAvailable: boolean
   isChanged: boolean
 }
@@ -30,68 +32,62 @@ const SettingPage: React.FC = () => {
       id: 0,
       url: "",
     },
+    url: '/logo-header',
     ...defaultSettingProps
   });
 
   const [headScript, setHeadScript] = useState<SettingsProps<string>>({
     content: "",
+    url: '/script/head',
     ...defaultSettingProps
   })
   const [preBodyScript, setPreBodyScript] = useState<SettingsProps<string>>({
     content: '',
+    url: '/script/prebody',
     ...defaultSettingProps
   })
   const [postBodyScript, setPostBodyScript] = useState<SettingsProps<string>>({
     content: "",
+    url: '/script/postbody',
     ...defaultSettingProps
   })
   
-  // const [isLogoAvailable, setIsLogoAvailable] = useState<boolean>(false);
+  const [googleAdsClientId, setGoogleAdsClientId] = useState<SettingsProps<string>>({
+    content: "",
+    url: '/ads/client-id',
+    ...defaultSettingProps
+  })
+
+  const [googleAdsSlotHome, setGoogleAdsSlotHome] = useState<SettingsProps<string>>({
+    content: "",
+    url: '/ads/slot/home',
+    ...defaultSettingProps
+  })
+
+  const [googleAdsSlotArticleSidebar, setGoogleAdsSlotArticleSidebar] = useState<SettingsProps<string>>({
+    content: "",
+    url: '/ads/slot/article/sidebar',
+    ...defaultSettingProps
+  })
+  
   const { setBlock, isDirty } = useNavigationPrompt();
   useEffect(() => {
-    ;(async () => {
-      try {
-        const getTemplate = await getTemplateByUrl("/logo-header");
-        if (getTemplate?.status_code == 200 && getTemplate.data) {
-          const data = JSON.parse(getTemplate.data.content);
-          setLogoImage((prev) => ({...prev, content: data, isAvailable: true}));
+    (() => {
+      const getTemplate = async (state: SettingsProps<any>, setState: React.Dispatch<React.SetStateAction<SettingsProps<any>>>) => {
+        const get = await getTemplateByUrl(state.url)
+        if(get?.status_code == 200 && get.data) {
+          const data = JSON.parse(get.data.content)
+          setState(prev => ({...prev, content: data, isAvailable: true}))
         }
-      } catch (e) {
-        console.log(e);
       }
-    })();
-    ;(async () => {
-      try {
-        const getTemplate = await getTemplateByUrl("/script/head");
-        if (getTemplate?.status_code == 200 && getTemplate.data) {
-          const data = JSON.parse(getTemplate.data.content);
-          setHeadScript((prev) => ({...prev, content: data, isAvailable: true}));
-        }
-      } catch (e) {
-        console.log(e);
-      }
-    })();
-    ;(async () => {
-      try {
-        const getTemplate = await getTemplateByUrl("/script/prebody");
-        if (getTemplate?.status_code == 200 && getTemplate.data) {
-          const data = JSON.parse(getTemplate.data.content);
-          setPreBodyScript((prev) => ({...prev, content: data, isAvailable: true}));
-        }
-      } catch (e) {
-        console.log(e);
-      }
-    })();
-    ;(async () => {
-      try {
-        const getTemplate = await getTemplateByUrl("/script/postbody");
-        if (getTemplate?.status_code == 200 && getTemplate.data) {
-          const data = JSON.parse(getTemplate.data.content);
-          setPostBodyScript((prev) => ({...prev, content: data, isAvailable: true}));
-        }
-      } catch (e) {
-        console.log(e);
-      }
+
+      getTemplate(logoImage, setLogoImage)
+      getTemplate(headScript, setHeadScript)
+      getTemplate(preBodyScript, setPreBodyScript)
+      getTemplate(postBodyScript, setPostBodyScript)
+      getTemplate(googleAdsClientId, setGoogleAdsClientId)
+      getTemplate(googleAdsSlotHome, setGoogleAdsSlotHome)
+      getTemplate(googleAdsSlotArticleSidebar, setGoogleAdsSlotArticleSidebar)
     })();
   }, []);
 
@@ -110,136 +106,67 @@ const SettingPage: React.FC = () => {
     return true;
   };
 
-  const saveSettingHandler = async () => {
-
+  const saveSettingHandler = async (state: SettingsProps<any>, message: string = 'Setting succesfully saved') => {
+    try {
+      if(state.isAvailable) {
+        if(!state.isChanged) return
+        const edit = await editTemplateByUrl(
+          state.url,
+          "Script",
+          JSON.stringify(state.content)
+        )
+        if(edit) return successSave(message)
+        return failedSave()
+      } else {
+        const create = await createTemplate(
+          state.url,
+          "Script",
+          JSON.stringify(state.content)
+        )
+        if(create) return successSave(message)
+        return failedSave()
+      }
+    } catch (e) {
+      console.error(e)
+      return failedSave()
+    }
   };
 
   const saveLogoHandler = async () => {
-    if (logoImage.isAvailable) {
-      try {
-        const edit = await editTemplateByUrl(
-          "/logo-header",
-          "Logo",
-          JSON.stringify(logoImage.content)
-        );
-        if (edit) {
-          return successSave();
-        } else {
-          return failedSave();
-        }
-      } catch (e) {
-        console.log(e);
-        return failedSave();
-      }
-    } else {
-      try {
-        const create = await createTemplate(
-          "/logo-header",
-          "Logo",
-          JSON.stringify(logoImage.content)
-        );
-        if (create) {
-          return successSave();
-        }
-        return failedSave();
-      } catch (e) {
-        console.log(e);
-        return failedSave();
-      }
-    }
+    saveSettingHandler(logoImage)
   }
 
   const saveScripts = async () => {
-    ;(async () => {
-      try {
-        if(headScript.isAvailable) {
-          const edit = await editTemplateByUrl(
-            '/script/head',
-            'Script',
-            JSON.stringify(headScript.content)
-          )
-          if(edit) return successSave();
-          return failedSave()
-        } else {
-          const create = await createTemplate(
-            '/script/head',
-            'Script',
-            JSON.stringify(headScript.content)
-          )
-          if(create) return successSave();
-          return failedSave();
-        }
-      } catch(e) {
-        console.log(e);
-        return failedSave()
-      }
-    })()
+    saveSettingHandler(headScript)
+    saveSettingHandler(preBodyScript)
+    saveSettingHandler(postBodyScript)
+  }
 
-    ;(async () => {
-      try {
-        if(preBodyScript.isAvailable) {
-          const edit = await editTemplateByUrl(
-            '/script/prebody',
-            'Script',
-            JSON.stringify(preBodyScript.content)
-          )
-          if(edit) return successSave();
-          return failedSave()
-        } else {
-          const create = await createTemplate(
-            '/script/prebody',
-            'Script',
-            JSON.stringify(preBodyScript.content)
-          )
-          if(create) return successSave();
-          return failedSave();
-        }
-      } catch(e) {
-        console.log(e);
-        return failedSave()
-      }
-    })()
 
-    ;(async () => {
-      try {
-        if(postBodyScript.isAvailable) {
-          const edit = await editTemplateByUrl(
-            '/script/postbody',
-            'Script',
-            JSON.stringify(postBodyScript.content)
-          )
-          if(edit) return successSave();
-          return failedSave()
-        } else {
-          const create = await createTemplate(
-            '/script/postbody',
-            'Script',
-            JSON.stringify(postBodyScript.content)
-          )
-          if(create) return successSave();
-          return failedSave();
-        }
-      } catch(e) {
-        console.log(e);
-        return failedSave()
-      }
-    })()
+  const saveAds = async () => {
+    saveSettingHandler(googleAdsClientId)
+    saveSettingHandler(googleAdsSlotHome)
+    saveSettingHandler(googleAdsSlotArticleSidebar)
   }
 
   return (
     <>
-      <div className="grid grid-cols-12">
-        <div className="col-span-6">
+      <div className="grid grid-cols-12 justify-center">
+        <div className="col-span-12">
           <ComponentCard title="Logo Image">
             <div>
               <AdminFeaturedImage
+                width="600px"
+                fit="contain"
                 url={`${API_URL}/${logoImage.content.url}`}
                 onSave={saveLogoImageHandler}
+                
                 // ratio="16/9"
               />
             </div>
             <Button onClick={saveLogoHandler}>Save Logo</Button>
           </ComponentCard>
+          <br />
           <ComponentCard title="Additional Scripts">
             <>
             <p>Insert scripts inside {'<head>'} tag</p>
@@ -264,10 +191,34 @@ const SettingPage: React.FC = () => {
             <div className="spacer py-8"></div>
             <Button onClick={saveScripts}>Save Scripts</Button>
           </ComponentCard>
+          <br />
+          <ComponentCard title="Google Ads">
+            <p>
+              Google Ads Client id
+            </p>
+            <div className="max-w-[600px]">
+              <Input placeholder={"ca-pub-XXXXXXXXXXXXXXXX"} onChange={e => {setGoogleAdsClientId(prev => ({...prev, content: e.target.value, isChanged: true})); setBlock(true)}} value={googleAdsClientId.content}></Input>
+            </div>
+            <div className="spacer py-3"></div>
+            <p>
+              Google Ads Slots Home
+            </p>
+            <div className="max-w-[600px]">
+              <Input placeholder={"123456789"} onChange={e => {setGoogleAdsSlotHome(prev => ({...prev, content: e.target.value, isChanged: true})); setBlock(true)}} value={googleAdsSlotHome.content}></Input>
+            </div>
+            <div className="spacer py-3"></div>
+            <p>
+              Google Ads Slots Article Sidebar
+            </p>
+            <div className="max-w-[600px]">
+              <Input placeholder={"123456789"} onChange={e => {setGoogleAdsSlotArticleSidebar(prev => ({...prev, content: e.target.value, isChanged: true})); setBlock(true)}} value={googleAdsSlotArticleSidebar.content}></Input>
+            </div>
+            <Button onClick={saveAds}>Save Scripts</Button>
+          </ComponentCard>
         </div>
       </div>
       <div className="fixed bottom-6 right-6">
-        {isDirty && <Button onClick={saveSettingHandler}>Save all settings</Button>}
+        {isDirty && <Button onClick={() => {}}>Save all settings</Button>}
       </div>
     </>
   );
