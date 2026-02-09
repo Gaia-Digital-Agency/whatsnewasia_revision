@@ -5,6 +5,7 @@ import { RouteProvider } from "./context/RouteContext"
 import { ContentProvider } from "./context/ContentContext"
 import { HeaderContentProvider } from "./context/HeaderContext"
 import { AuthProvider } from "./context/AuthContext"
+import { AdsProvider } from "./context/AdsContext"
 import { HelmetProvider } from "react-helmet-async";
 
 type MainAppProps = {
@@ -20,16 +21,18 @@ const App: React.FC<MainAppProps> = ({children, initialData}) => {
                       <ContentProvider initialData={initialData?.initialContent}>
                           <HeaderContentProvider initialData={initialData?.initialTemplateContent}>
                               <AuthProvider initialData={initialData?.initialAuth ? initialData.initialAuth[0] : null}>
+                                <AdsProvider initialData={initialData?.initialGoogleAds}>
                                   <HelmetProvider>
                                       {children}
                                   </HelmetProvider>
+                                </AdsProvider>
                               </AuthProvider>
                           </HeaderContentProvider>
                       </ContentProvider>
                   </RouteProvider>
               </TaxonomyProvider>
           </TimeProvider>
-    //   </React.StrictMode>
+    // </React.StrictMode>
   )
 }
 
