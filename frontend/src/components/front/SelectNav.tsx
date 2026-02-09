@@ -64,8 +64,8 @@ const SelectNav: React.FC<SelectNavProps> = ({onChange, options, value, defaultL
                     return className + ' !bg-front-red !text-white'
                 },
                 singleValue: state => {
-                    const className =classNames?.singleValue || ''
-                    return className + ' text-black text-front-body-big'
+                    const className = classNames?.singleValue || ''
+                    return className + ' text-black'
                     if(state.getValue()[0].value == defaultLabel) {
                     }
                     return className + ' !text-white text-front-body-big'

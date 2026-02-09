@@ -85,9 +85,9 @@ const NavLocation: React.FC = () => {
     if(actualRoute.country) {
         return (
             <>
-                <div className="flex flex-col md:flex-row gap-y-2 md:gap-y-0 md:gap-x-3">
+                <div className="flex flex-col md:flex-row text-front-nav-header gap-y-2 md:gap-y-0 md:gap-x-3">
                     <div className="md:w-[250px] w-full">
-                        <SelectNav classNames={{singleValue: "uppercase"}} defaultLabel={"All Asia"} redOnActive={true} onChange={changeCountryHandler} value={actualRoute?.country ? actualRoute.country.slug : undefined} options={
+                        <SelectNav classNames={{singleValue: "desktop-country-nav uppercase", option: "desktop-country-nav"}} defaultLabel={"All Asia"} redOnActive={true} onChange={changeCountryHandler} value={actualRoute?.country ? actualRoute.country.slug : undefined} options={
                             filteredTax?.countries?.map(country => {
                                 return {value: country.slug, label: country.name}
                             }) ?? []
@@ -96,7 +96,7 @@ const NavLocation: React.FC = () => {
                     {
                         !!(cities && actualRoute.country && cities.length) &&
                         <div className="md:w-[250px] w-full">
-                            <SelectNav classNames={{singleValue: "uppercase"}} defaultLabel={"Explore City"} onChange={changeCityHandler} value={actualRoute.city ? actualRoute.city.slug : undefined} options={
+                            <SelectNav classNames={{singleValue: "desktop-country-nav uppercase", option: "desktop-country-nav"}} defaultLabel={"Explore City"} onChange={changeCityHandler} value={actualRoute.city ? actualRoute.city.slug : undefined} options={
                                 cities.map(city => {
                                     return {value: city.slug, label: city.name}
                                 })
@@ -106,7 +106,7 @@ const NavLocation: React.FC = () => {
                     {
                         !!(regions && actualRoute.city && regions.length) && 
                         <div className="md:w-[250px] w-full">
-                            <SelectNav classNames={{singleValue: "uppercase"}} defaultLabel={"Explore by Area"} onChange={changeRegionHandler} value={actualRoute.region ? actualRoute.region.slug : undefined} options={
+                            <SelectNav classNames={{singleValue: "desktop-country-nav uppercase", option: "desktop-country-nav"}} defaultLabel={"Explore by Area"} onChange={changeRegionHandler} value={actualRoute.region ? actualRoute.region.slug : undefined} options={
                                 regions.map(region => {
                                     return {value: region.slug, label: region.name}
                                 })
@@ -145,7 +145,7 @@ const NavLocation: React.FC = () => {
                                 return (
                                     <SwiperSlide>
                                         <div className="country uppercase text-center items-center" key={`navlocation-explore-${country.id}`}>
-                                            <Link className="text-front-body border-[2px] border-front-red flex justify-center items-center h-10 w-full transition text-white bg-front-red hover:text-black hover:bg-white" to={getCountryUrl(country)}>{country.name}</Link>
+                                            <Link className="text-front-nav-header font-medium border-[2px] border-front-red flex justify-center items-center h-10 w-full transition text-white bg-front-red hover:text-black hover:bg-white" to={getCountryUrl(country)}>{country.name}</Link>
                                         </div>
                                     </SwiperSlide>
                                 )
