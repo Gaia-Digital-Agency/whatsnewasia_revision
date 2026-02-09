@@ -8,6 +8,9 @@ vendor
 
 # PYTHIN ENVIRONMENT FILES
 .env
+.env.vm
+.env.production
+.env.development
 .coverage
 .next/
 venv/
