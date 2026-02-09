@@ -20,7 +20,7 @@ import { fetchContentData } from "./src/ssr/content.fetch.js";
 import { fetchTemplateContent, fetchTemplateRoute } from "./src/ssr/templates.fetch.js";
 import { fetchAuth } from "./src/ssr/auth.fetch.js";
 import { fetchArticlesData, getInitialArticleHeroImage } from "./src/ssr/articles.fetch.js";
-import redis from "./redisClient.js";
+import { getInitialAdsSlot } from "./src/ssr/ads.fetch.js";
 import penthouse from 'penthouse'
 
 const __filename = fileURLToPath(import.meta.url);
@@ -47,7 +47,7 @@ db.sequelize
   .then(() => {
     console.log("✅ Database connected");
     // Sync database schema - creates tables if they don't exist
-    return db.sequelize.sync({ alter: true });
+    return db.sequelize.sync({ alter: false })
   })
   .then(() => console.log("✅ Database schema synced"))
   .catch((err) => console.error("❌ Error DB:", err));
@@ -319,11 +319,13 @@ app.use('*', async (req, res, next) => {
     const initialTime = new Date().toISOString()
     const initialHeroImage = getInitialArticleHeroImage(initialRoute, initialContent)
 
+    const initialGoogleAds = await getInitialAdsSlot()
+
     const initialHeadScript = await fetchTemplateRoute('/script/head');
     const initialPreBodyScript = await fetchTemplateRoute('/script/prebody');
     const initialPostBodyScript = await fetchTemplateRoute('/script/postbody');
 
-    const initialData = { initialTaxonomies, initialRoute, initialContent, initialTemplateContent, initialAuth, initialTime };
+    const initialData = { initialTaxonomies, initialRoute, initialContent, initialTemplateContent, initialAuth, initialTime, initialGoogleAds };
     // const passData = sanitizeDataForJSON(initialData, initialTemplateContent)
     const passData = {...initialData, initialTemplateContent}
     
@@ -354,7 +356,7 @@ app.use('*', async (req, res, next) => {
 
 
     const disableCacheUrl = ['/admin', '/signin']
-    const shouldCacheHTML = !disableCacheUrl.find(disabledUrl => (_url.includes(disabledUrl)))
+    // const shouldCacheHTML = !disableCacheUrl.find(disabledUrl => (_url.includes(disabledUrl)))
     html = html.replace(
       '<!-- prebody -->',
       `${initialPreBodyScript ?? ''}`
