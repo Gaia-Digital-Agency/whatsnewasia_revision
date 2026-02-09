@@ -67,6 +67,7 @@ import type { ArticleProps } from './types/article.type'
 import { HeaderContentProvider } from './context/HeaderContext'
 import { AuthProvider } from './context/AuthContext'
 import { TimeProvider } from './context/TimeContext'
+import { AdsProvider } from './context/AdsContext'
 
 type InitialDataProps = {
     initialTaxonomies: TaxonomiesProps
@@ -74,7 +75,8 @@ type InitialDataProps = {
     initialContent: ArticleProps[],
     initialTemplateContent: any,
     initialAuth: any,
-    initialTime: string
+    initialTime: string,
+    initialGoogleAds: any
 }
 
 type TaxonomiesProps = {
@@ -95,7 +97,7 @@ export function render(url: string, initialData: InitialDataProps) {
 
     // const router = createStaticRouter(routes)
 
-    const { initialTaxonomies, initialRoute, initialContent, initialTemplateContent, initialAuth, initialTime } = initialData
+    const { initialTaxonomies, initialRoute, initialContent, initialTemplateContent, initialAuth, initialTime, initialGoogleAds } = initialData
     const helmetContext: { helmet?: any } = {}
 
     return new Promise<{ appHtml: string; helmet: any }>((resolve, reject) => {
@@ -110,9 +112,11 @@ export function render(url: string, initialData: InitialDataProps) {
                         <ContentProvider initialData={initialContent}>
                             <HeaderContentProvider initialData={initialTemplateContent}>
                                 <AuthProvider initialData={initialAuth}>
-                                    <HelmetProvider context={helmetContext}>
-                                        <RouterProvider router={memoryRouter} />
-                                    </HelmetProvider>
+                                    <AdsProvider initialData={initialGoogleAds}>
+                                        <HelmetProvider context={helmetContext}>
+                                            <RouterProvider router={memoryRouter} />
+                                        </HelmetProvider>
+                                    </AdsProvider>
                                 </AuthProvider>
                             </HeaderContentProvider>
                         </ContentProvider>
