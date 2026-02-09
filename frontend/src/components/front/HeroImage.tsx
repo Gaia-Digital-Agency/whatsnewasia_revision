@@ -181,7 +181,9 @@ const HeroImage: React.FC<ComponentTemplateHomeProps> = ({preContent = [], admin
         playControls.current.play(index);
         // }
     };
-    if(content.length) {
+
+    if(content&&content.length&&content.filter(Boolean)) {
+        console.log(content)
         return (
             <>
                 <section>
@@ -255,15 +257,15 @@ const HeroImage: React.FC<ComponentTemplateHomeProps> = ({preContent = [], admin
             </>
         )
     } else {
-        return (
-            <div className="h-screen w-screen relative">
-                <Skeleton className="absolute w-full h-full inset-0" />
-                <HeroTitleWrapper>
-                    <HeroTitle></HeroTitle>
-                    <HeroDescription></HeroDescription>
-                </HeroTitleWrapper>
-            </div>
-        )
+        // return (
+        //     <div className="h-screen w-screen relative">
+        //         <Skeleton className="absolute w-full h-full inset-0" />
+        //         <HeroTitleWrapper>
+        //             <HeroTitle></HeroTitle>
+        //             <HeroDescription></HeroDescription>
+        //         </HeroTitleWrapper>
+        //     </div>
+        // )
     }
 }
 
