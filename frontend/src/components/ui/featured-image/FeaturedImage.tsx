@@ -132,12 +132,14 @@ type FeaturedImageProps = {
   ratio?: string;
   onClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
   width?: string;
+  fit?: "contain" | "cover"
 };
 
 const FeaturedImage: React.FC<FeaturedImageProps> = ({
   url,
   alt = "",
   ratio = "16/9",
+  fit = "cover"
 }) => {
   return (
     <div
@@ -148,6 +150,7 @@ const FeaturedImage: React.FC<FeaturedImageProps> = ({
         <img
           src={url}
           alt={alt}
+          style={{objectFit: fit}}
           className="absolute inset-0 h-full w-full object-cover transition-all duration-300 group-hover:scale-105"
         />
       ) : (
@@ -164,7 +167,7 @@ const FeaturedImage: React.FC<FeaturedImageProps> = ({
 
 export const AdminFeaturedImage: React.FC<
   FeaturedImageProps & { onSave: (file: AssetMedia) => void }
-> = ({ url, alt, onSave, ratio, width = "100%" }) => {
+> = ({ url, alt, onSave, ratio, width = "100%", fit = "cover" }) => {
   const { isOpen, closeModal, openModal } = useModal(false);
 
   const saveHandler = (file: AssetMedia) => {
@@ -179,7 +182,7 @@ export const AdminFeaturedImage: React.FC<
         style={{ width }}
         onClick={openModal}
       >
-        <FeaturedImage url={String(url).startsWith(API_URL) ? url : API_URL + "/" + url} alt={alt} ratio={ratio} width={width} />
+        <FeaturedImage fit={fit} url={String(url).startsWith(API_URL) ? url : API_URL + "/" + url} alt={alt} ratio={ratio} width={width} />
 
         {/* Hover Overlay */}
         <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 transition-all duration-300 backdrop-blur-[2px] rounded-2xl">
