@@ -6,6 +6,8 @@ import { useNotification } from "../context/NotificationContext";
 import { useAuth } from "../context/AuthContext";
 import { UserLevelProps } from "../types/auth.type";
 
+const env = import.meta.env
+
 
 type ProtectedRouteProps = PropsWithChildren & {
   allowedUserLevel?: Array<UserLevelProps>
@@ -65,7 +67,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, allowedUserLe
   useEffect(() => {
     if(!forbiddenLevel) return
     setNotification({message: 'You are not allowed to access the page', type: 'fail'})
-    navigate('/admin')
+    navigate(`${String(env.VITE_BASE_PATH).endsWith('/') ? String(env.VITE_BASE_PATH).substring(0, (String(env.VITE_BASE_PATH).length - 1)) : env.VITE_BASE_PATH}/admin`)
     setForbiddenLevel(false)
   }, [forbiddenLevel])
   const params = useParams()
@@ -74,7 +76,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, allowedUserLe
     (async () => {
       const user = await getUser()
       if(!user) {
-        navigate('/signin')
+        navigate(`${String(env.VITE_BASE_PATH).endsWith('/') ? String(env.VITE_BASE_PATH).substring(0, (String(env.VITE_BASE_PATH).length - 1)) : env.VITE_BASE_PATH}/signin`)
       }
     })()
   }, [params])
@@ -89,7 +91,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, allowedUserLe
     return <></>
   } else {
     if(userDetails === undefined) {
-      navigate('/signin')
+      navigate(`${String(env.VITE_BASE_PATH).endsWith('/') ? String(env.VITE_BASE_PATH).substring(0, (String(env.VITE_BASE_PATH).length - 1)) : env.VITE_BASE_PATH}/signin`)
       return <></>
     }
     if(userDetails && typeof userDetails.user_level == 'string') {

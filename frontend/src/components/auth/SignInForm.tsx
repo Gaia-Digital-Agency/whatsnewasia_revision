@@ -6,6 +6,7 @@ import Label from "../form/Label";
 import Input from "../form/input/InputField";
 // import Checkbox from "../form/input/Checkbox";
 import Button from "../ui/button/Button";
+const env = import.meta.env
 
 import { login, LoginCredentials } from "../../services/auth.service";
 import Alert from "../ui/alert/Alert";
@@ -32,7 +33,7 @@ export default function SignInForm() {
       // If login is successful, redirect to the dashboard page
       // console.log("Login successful");
       // return navigate("/admin", {replace: true});
-      window.location.replace('/admin')
+      window.location.replace(`${String(env.VITE_BASE_PATH).endsWith('/') ? String(env.VITE_BASE_PATH).substring(0, (String(env.VITE_BASE_PATH).length - 1)) : env.VITE_BASE_PATH}/admin`)
     } catch (err: unknown) {
       if (err instanceof Error) {
         setError(err.message);
