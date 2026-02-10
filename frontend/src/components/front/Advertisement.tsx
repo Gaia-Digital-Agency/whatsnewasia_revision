@@ -25,7 +25,7 @@ const Advertisement: React.FC<AdvertisementProps> = ({ ratio = "horizontal", slo
 
 
     useEffect(() => {
-        if(!ready || !adRef.current || !slot || !wrapperRef.current) return
+        if(!ready || !adRef.current || !slot || !clientId) return
         // wrapperRef.current.style.display = 'block'
         // adRef.current.dataset.adSlot = slot
         // adRef.current.dataset.adClient = clientId
@@ -46,7 +46,7 @@ const Advertisement: React.FC<AdvertisementProps> = ({ ratio = "horizontal", slo
                         ref={adRef}
                         style={{display: "none"}}
                         data-ad-slot={slot}
-                        data-ad-client={clientId}
+                        data-ad-client={clientId ?? 0}
                         data-ad-format="auto"
                         className="absolute adsbygoogle inset-0 h-full"
                     />
