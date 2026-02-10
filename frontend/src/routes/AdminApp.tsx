@@ -165,7 +165,7 @@ export const adminRoutes: RouteObject[] = [
 ]
 
 const AdminApp = () => {
-    const router = createBrowserRouter(adminRoutes);
+    const router = createBrowserRouter(adminRoutes, { basename: import.meta.env.VITE_BASE_PATH || "/" });
     return <RouterProvider router={router} />
 }
 
