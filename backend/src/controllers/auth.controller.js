@@ -6,9 +6,11 @@ export default {
     try {
       const { email, password } = req.body;
       const vaData = await authService.login(email, password);
+      // console.log(req.body);
+      // return response(res, 200, {"jejje": "jsjajs"})
       const cookieOptions = {
         httpOnly: true, // Not accessible by client-side JavaScript (XSS protection)
-        secure: true, // Use 'secure: true' in production over HTTPS
+        secure: false, // Use 'secure: true' in production over HTTPS
         sameSite: "none", // Required for cross-origin cookies
       };
       // Send Refresh Token as an HTTP-only cookie
