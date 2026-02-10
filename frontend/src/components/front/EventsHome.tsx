@@ -85,7 +85,7 @@ const EventsHome: React.FC<ComponentTemplateHomeProps> = ({preContent = []}) => 
                         <div className="title-wrapper text-center mb-8">
                             <p className="text-front-section-title font-serif font-semibold"><span className="text-front-red">{title} Events</span> You Shouldn’t Miss</p>
                         </div>
-                        <div className="grid grid-cols-12 md:gap-x-10 gap-y-10 mb-6 md:mb-4">
+                        <div className="grid grid-cols-12 md:gap-x-10 gap-y-10 mb-6 md:mb-4 pb-8">
                             {
                                 content?.map(article => {
                                     if(article) {
