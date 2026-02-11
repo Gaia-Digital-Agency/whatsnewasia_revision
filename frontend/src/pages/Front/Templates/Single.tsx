@@ -270,7 +270,7 @@ const Single: React.FC = () => {
         const weightSelection = [
             {
                 value: "font-thin",
-                label: "extra-light"
+                label: "thin"
             },
             {
                 value: "font-extralight",
