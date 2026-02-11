@@ -42,6 +42,8 @@ layer(base);
 
   --text-front-hero: var(--text-front-hero);
   --text-front-hero--line-height: var(--text-front-hero--line-height);
+  --text-front-single-hero: var(--text-front-single-hero);
+  --text-front-single-hero--line-height: var(--text-front-single-hero--line-height);
   --text-front-section-title: var(--text-front-section-title);
   --text-front-section-title--line-height: var(
     --text-front-section-title--line-height
@@ -213,6 +215,18 @@ layer(base);
 
   --font-sans: "Helvetica Neue";
   --font-serif: "Playfair Display", serif;
+  --font-roboto: "Roboto", sans-serif;
+  --font-montserrat: "Montserrat", sans-serif;
+  --font-poppins: "Poppins", sans-serif;
+  --font-open-sans: "Open Sans", sans-serif;
+  --font-lato: "Lato", sans-serif;
+}
+
+header .line {
+  border-top: 1px solid rgba(0,0,0,.3);
+}
+*:focus {
+  outline: 1px solid var(--color-front-red);
 }
 .container,
 .md\:container {
@@ -242,7 +256,7 @@ layer(base);
   ::before,
   ::backdrop,
   ::file-selector-button {
-    border-color: var(--color-gray-200, currentColor);
+    /* border-color: var(--color-gray-200, currentColor); */
   }
   button:not(:disabled),
   [role="button"]:not(:disabled) {
@@ -259,6 +273,8 @@ layer(base);
 :root {
   --text-front-hero: 28px;
   --text-front-hero--line-height: 1;
+  --text-front-single-hero: 28px;
+  --text-front-single-hero--line-height: 1;
   --text-front-section-title: 28px;
   --text-front-section-title--line-height: 1.5;
   --text-front-main-title: 26px;
@@ -324,12 +340,14 @@ layer(base);
   :root {
     --text-front-hero: 46px;
     --text-front-hero--line-height: 1.25;
+    --text-front-single-hero: 36px;
+    --text-front-single-hero--line-height: 1.25;
     --text-front-section-title: 44px;
     --text-front-section-title--line-height: 1.5;
     --text-front-main-title: 36px;
     --text-front-main-title--line-height: 1.4;
     --text-front-article-title: 30px;
-    --text-front-article-title--line-height: 1.4;
+    --text-front-article-title--line-height: 1.3;
     --text-front-title: 26px;
     --text-front-title--line-height: 1.4;
     --text-front-subtitle-big: 24px;
@@ -1309,6 +1327,9 @@ article {
     h4 {
       font-size: 20px;
     }
+    a {
+      color: var(--color-front-red);
+    }
   }
 }
 
@@ -1376,7 +1397,7 @@ article {
 
 article .content-wrapper a,
 article .content-wrappper a {
-  color: #2772e1;
+  /* color: #2772e1; */
   text-decoration: underline;
 }
 
