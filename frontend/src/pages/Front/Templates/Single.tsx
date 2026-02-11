@@ -4,7 +4,7 @@ import { ArticleApiResponseProps, ArticleProps } from "../../../types/article.ty
 import Advertisement from "../../../components/front/Advertisement"
 import Newsletter from "../../../components/front/Newsletter"
 import Image from "../../../components/front/Image"
-import { Link } from "react-router"
+import { Link, useSearchParams } from "react-router"
 import Button from "../../../components/front/Button"
 import { Swiper, SwiperSlide } from "swiper/react"
 import { Pagination } from "swiper/modules"
@@ -40,12 +40,12 @@ const DiscoverArticle: React.FC<{article: ArticleApiResponseProps}> = ({article}
             <div className="image-wrapper mb-5">
                 <Image ratio="62%" url={getFeaturedImageUrl(article)} link={getPermalink(article)} />
             </div>
-            <div className="category-wrapper">
+            <div className="category-wrapper mb-2">
                 <p className="uppercase text-front-red">{taxonomies.categories?.find(cat => (cat.id == article.category_id))?.title}</p>
             </div>
             <div className="title-wrapper">
                 <Link to={getPermalink(article)}>
-                    <p className="text-front-subtitle font-serif">{article.title}</p>
+                    <p className="text-front-subtitle font-serif leading-[1.3]">{article.title}</p>
                 </Link>
             </div>
         </>
@@ -134,6 +134,11 @@ const Single: React.FC = () => {
     const {userDetails} = useAuth()
     const [isClient, setIsClient] = useState<boolean>(false)
     const deepestLocation = getDeepestLocation(actualRoute.article, 'city')
+
+    const [fontFamily, setFontFamily] = useState<string>()
+    const [fontWeight, setFontWeight] = useState<string>()
+
+    const getParams = useSearchParams()
 
     useEffect(() => {
         setCurrentUrl(window.location.href)
@@ -235,10 +240,94 @@ const Single: React.FC = () => {
         }
     }
 
+    const generateClassNamesForFonts = () => {
+        if(!isClient) return
+        return `${fontFamily} ${fontWeight}`
+    }
+
+    const renderFontSelection = () => {
+        const familySelection = [
+            {
+                value: "font-sans",
+                label: "Helvetica (WNA)",
+                selected: true
+            },
+            {
+                value: "font-roboto",
+                label: "Roboto"
+            },
+            {
+                value: "font-poppins",
+                label: "Poppins"
+            },
+            {
+                value: "font-open-sans",
+                label: "Open Sans"
+            },
+            {
+                value: "font-lato",
+                label: "Lato"
+            }
+        ]
+        const weightSelection = [
+            {
+                value: "font-extra-light",
+                label: "extra-light"
+            },
+            {
+                value: "font-light",
+                label: "light"
+            },
+            {
+                value: "font-normal",
+                label: "regular",
+                selected: true
+            },
+            {
+                value: "font-medium",
+                label: "medium"
+            },
+            {
+                value: "font-semibold",
+                label: "semibold"
+            },
+            {
+                value: "font-bold",
+                label: "bold"
+            },
+        ]
+        return (
+            <div className="fixed right-0 bottom-0 border border-front-red">
+                <div className="inner bg-white p-8">
+                    <div className="mb-8">
+                        <p>
+                            Font Family
+                        </p>
+                        <select className={`border border-black`} name="" onChange={(e) => {setFontFamily(e.target.value)}} id="">
+                            {familySelection.map(fam => (
+                                <option value={fam.value} selected={fam.selected ?? false} className={fam.value} key={`fam-${fam.value}`}>{fam.label}</option>
+                            ))}
+                        </select>
+                    </div>
+                    <div className="">
+                        <p>
+                            Font Weight
+                        </p>
+                        <select className="border border-black" name="" id="" onChange={(e) => {setFontWeight(e.target.value)}}>
+                            {weightSelection.map(fam => (
+                                <option value={fam.value} key={`fam-${fam.value}`} selected={fam.selected ?? false}>{fam.label}</option>
+                            ))}
+                        </select>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+// font-poppins font-montserrat font-roboto
     return (
         <>
         <Helmet>
-            <title>{actualRoute.article?.title ?? ''} - Whatsnew Asia</title>
+            <title>{actualRoute.article?.title ?? ''} - What's New Asia</title>
             <meta name="description" content={String(content?.meta_data?.meta_description ?? content?.sub_title ?? '')} />
             <link rel="canonical" href={`${SITE_URL}/${actualRoute.country?.slug}/${actualRoute.category?.slug_title}/${actualRoute.article?.slug}`} />
             <meta property="og:type" content="article" />
@@ -252,7 +341,8 @@ const Single: React.FC = () => {
             <meta name="twitter:description" content={actualRoute.article?.sub_title} />
             <meta name="twitter:image" content={`${IMAGE_URL}/${actualRoute.article?.featured_image_16_9_url || actualRoute.article?.featured_image_url || 'images/placeholder.png'}`} />
         </Helmet>
-        <article>
+        <article className={generateClassNamesForFonts()}>
+            {renderFontSelection()}
             <div className="container mb-24">
                 <div className="grid grid-cols-12 pt-12 md:gap-x-10 gap-y-10">
                     <div className="col-span-12 mb-6">
@@ -293,13 +383,13 @@ const Single: React.FC = () => {
                             </div>
                         </div>
                         <div className="title-wrapper mb-4">
-                            <h1 className="font-serif text-front-hero">{content?.title}</h1>
+                            <h1 className="font-serif text-front-single-hero">{content?.title}</h1>
                         </div>
                         <div className="featured-image-wrapper py-4 mb-4">
                             <Image url={getFeaturedImageUrl(content, '16_9')} ratio="56.25%" isLazy={false} fetchPriority="high" />
                         </div>
                         <div className="share-buttons-wrapper mb-8 flex items-center gap-x-5">
-                            <p>Share:</p>
+                            <p className="text-front-red">Share:</p>
                             {currentUrl &&
                             <>
                                 <FacebookShareButton url={currentUrl}>
