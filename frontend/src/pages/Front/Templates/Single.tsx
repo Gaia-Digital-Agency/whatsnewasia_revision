@@ -135,8 +135,8 @@ const Single: React.FC = () => {
     const [isClient, setIsClient] = useState<boolean>(false)
     const deepestLocation = getDeepestLocation(actualRoute.article, 'city')
 
-    const [fontFamily, setFontFamily] = useState<string>()
-    const [fontWeight, setFontWeight] = useState<string>()
+    const [fontFamily, setFontFamily] = useState<string>('font-sans')
+    const [fontWeight, setFontWeight] = useState<string>('font-normal')
 
     useEffect(() => {
         setCurrentUrl(window.location.href)
@@ -269,7 +269,11 @@ const Single: React.FC = () => {
         ]
         const weightSelection = [
             {
-                value: "font-extra-light",
+                value: "font-thin",
+                label: "extra-light"
+            },
+            {
+                value: "font-extralight",
                 label: "extra-light"
             },
             {
