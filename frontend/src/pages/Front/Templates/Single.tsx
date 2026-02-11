@@ -4,7 +4,7 @@ import { ArticleApiResponseProps, ArticleProps } from "../../../types/article.ty
 import Advertisement from "../../../components/front/Advertisement"
 import Newsletter from "../../../components/front/Newsletter"
 import Image from "../../../components/front/Image"
-import { Link, useSearchParams } from "react-router"
+import { Link } from "react-router"
 import Button from "../../../components/front/Button"
 import { Swiper, SwiperSlide } from "swiper/react"
 import { Pagination } from "swiper/modules"
@@ -137,8 +137,6 @@ const Single: React.FC = () => {
 
     const [fontFamily, setFontFamily] = useState<string>()
     const [fontWeight, setFontWeight] = useState<string>()
-
-    const getParams = useSearchParams()
 
     useEffect(() => {
         setCurrentUrl(window.location.href)
