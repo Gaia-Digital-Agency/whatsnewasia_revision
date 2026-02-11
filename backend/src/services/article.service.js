@@ -2067,6 +2067,18 @@ export default {
       for (const row of dbData) {
         let article = articlesMap.get(row.id);
 
+        const localDt = DateTime.utc();
+        const strDt = localDt.toString();
+        
+        if(row.meta_data && row.meta_data.end_date){
+          const dToday = strDt.slice(0,10);
+          const endDatefromMeta = row.meta_data.end_date;
+
+          if(dToday > endDatefromMeta){
+            continue;
+          }
+        }
+
         if (!article) {
           // Jika artikel ini baru pertama kali ditemukan
           article = {
