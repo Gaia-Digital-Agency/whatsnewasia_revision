@@ -3,6 +3,11 @@ import { lazy } from "react";
 import { Suspense } from "react";
 // Admin pages
 import ProtectedRoute from "../components/ProtectedRoute"
+import AdsManager from "../pages/Ads/AdsManager";
+import AdsLayout from "../layout/AdsLayout";
+import AdsCountry from "../pages/Ads/AdsCountry";
+import AdsCity from "../pages/Ads/AdsCity";
+import AdsRegion from "../pages/Ads/AdsRegion";
 const ArticleAdmin = lazy(() => import("../layout/ArticleAdmin"))
 const TemplateLayout = lazy(() => import("../layout/TemplateLayout"))
 const AppLayout = lazy(() => import("../layout/AppLayout"))
@@ -57,6 +62,32 @@ export const adminRoutes: RouteObject[] = [
                         <SettingPage />
                     </ProtectedRoute>
                 ),
+            },
+            {
+                path: "ads",
+                element: (
+                    <ProtectedRoute allowedUserLevel={["super_admin"]}>
+                        <AdsLayout />
+                    </ProtectedRoute>
+                ),
+                children: [
+                    {
+                        index: true,
+                        element: <AdsManager />
+                    },
+                    {
+                        path: "country/:country",
+                        element: <AdsCountry />,
+                    },
+                    {
+                        path: "city/:city",
+                        element: <AdsCity />
+                    },
+                    {
+                        path: "region/:region",
+                        element: <AdsRegion />
+                    }
+                ]
             },
             {
                 path: "mst_locations",
