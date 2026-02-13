@@ -37,7 +37,7 @@ const SelectNav: React.FC<SelectNavProps> = ({onChange, options, value, defaultL
             }
             styles={{
                 control: (style, state) => {
-                    return {...style, borderRadius: '0', border: 0, borderBottom: state.getValue()[0].value == defaultLabel ? '1px solid var(--color-front-red)' : '1px solid var(--color-front-red)'}
+                    return {...style, borderRadius: '0', border: 0, borderBottom: state.getValue()[0].value == defaultLabel ? '1px solid var(--color-front-red)' : '1px solid var(--color-front-red)', boxShadow: state.isFocused ? '0 0 0 1px var(--color-front-red)' : '', color: state.getValue()[0].value == defaultLabel ? 'black' : 'var(--color-front-red)'}
                 },
                 menu: style => {
                     return {...style, borderRadius: 0}
@@ -58,22 +58,25 @@ const SelectNav: React.FC<SelectNavProps> = ({onChange, options, value, defaultL
             classNames={{
                 control: (state) => {
                     const className = classNames?.control || ''
-                    return className + ' bg-white'
                     if(state.getValue()[0].value == defaultLabel) {
+                        return className + ' bg-white control should-default-control'
                     }
-                    return className + ' !bg-front-red !text-white'
+                    return className + ' bg-white control'
+                    if(state.getValue()[0].value == defaultLabel) {
+                        return className + ' !bg-front-red !text-white'
+                    }
                 },
                 singleValue: state => {
                     const className = classNames?.singleValue || ''
-                    return className + ' text-black'
                     if(state.getValue()[0].value == defaultLabel) {
+                        return className + ' !text-black should-default-single'
                     }
-                    return className + ' !text-white text-front-body-big'
+                    return className + ' text-front-body-big'
                 },
                 indicatorSeparator: () => 'hidden',
                 dropdownIndicator: () => {
                     // if (state.getValue()[0].value == defaultLabel) return '!text-front-black-grey'
-                    return '!text-front-red'
+                    return 'dropdown-indicator'
                 },
                 option: () => {
                     const className = classNames?.option || ''
