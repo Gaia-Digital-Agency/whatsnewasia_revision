@@ -12,6 +12,7 @@ type RouteContextProps = {
     setClientChange: (type: boolean) => void,
     getLocationRouteUrl: () => string,
     generateLocationRouteUrl: ({}: LocationProps) => string
+    getLocationUrl: () => string
 }
 
 type LocationProps = {
@@ -29,7 +30,7 @@ interface RouteProviderProps extends PropsWithChildren {
     initialData: any
 }
 
-const RouteContext = createContext<RouteContextProps>({actualRoute: {country: undefined, city: undefined, region: undefined}, setActualRoute: () => {}, routeType: "", setRouteType: () => {}, clientChange: false, setClientChange: () => {}, getLocationRouteUrl: () => (''), generateLocationRouteUrl: () => ('')})
+const RouteContext = createContext<RouteContextProps>({actualRoute: {country: undefined, city: undefined, region: undefined}, setActualRoute: () => {}, routeType: "", setRouteType: () => {}, clientChange: false, setClientChange: () => {}, getLocationRouteUrl: () => (''), generateLocationRouteUrl: () => (''), getLocationUrl: () => ('')})
 
 export const RouteProvider: React.FC<RouteProviderProps> = ({children, initialData}) => {
     const [actualRoute, setStateActualRoute] = useState<RouteProps>(initialData?.listingParams ?? {})
@@ -51,6 +52,13 @@ export const RouteProvider: React.FC<RouteProviderProps> = ({children, initialDa
     const getLocationRouteUrl = () => {
         return `${actualRoute.country ? `/${actualRoute.country.slug}` : ''}${actualRoute.city ? `/${actualRoute.city.slug}` : ''}${actualRoute.region ? `/${actualRoute.region.slug}` : ''}`
     }
+    const getLocationUrl = () => {
+        let res = [];
+        if(actualRoute.country) res.push(actualRoute.country.slug);
+        if(actualRoute.city) res.push(actualRoute.city.slug);
+        if(actualRoute.region) res.push(actualRoute.region.slug);
+        return '/' + res.join('/')
+    }
     const generateLocationRouteUrl = ({country, city, region, category}: LocationProps) => {
         let res = [];
         if(country) res.push(country.slug);
@@ -60,7 +68,7 @@ export const RouteProvider: React.FC<RouteProviderProps> = ({children, initialDa
         return '/' + res.join('/')
     }
     return (
-        <RouteContext.Provider value={{actualRoute, setActualRoute, routeType, setRouteType, clientChange, setClientChange, getLocationRouteUrl, generateLocationRouteUrl}}>
+        <RouteContext.Provider value={{actualRoute, setActualRoute, routeType, setRouteType, clientChange, setClientChange, getLocationRouteUrl, generateLocationRouteUrl, getLocationUrl}}>
             {children}
         </RouteContext.Provider>
     )
