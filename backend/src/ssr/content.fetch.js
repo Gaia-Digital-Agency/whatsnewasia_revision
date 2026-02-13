@@ -117,7 +117,7 @@ const generateContentHomeTemplate = async (templates, baseQuery, taxonomies) => 
 
 const discoverArticle = async (route) => {
   const get = await fetchArticlesData({
-    id_country: route.id_country,
+    id_country: String(route.id_country),
     limit: 4
   })
   return get.articles
@@ -126,7 +126,7 @@ const discoverArticle = async (route) => {
 const relatedArticle = async (category) => {
   const get = await fetchArticlesData({
     limit: 11,
-    category: category
+    category: String(category)
   })
   return get.articles
 }
@@ -169,7 +169,8 @@ const fetchContentData = async (route, taxonomy, search = undefined) => {
   if(route.type == 'ARTICLE_EVENT') {
     const discover = await discoverArticle(baseQuery)
     const related = await relatedArticle(route.listingParams.category.id)
-    const tags = await fetchTagsData(route.listingParams.article.tags)
+    const tags = await fetchTagsData(route?.listingParams?.article?.tags) ?? null
+    console.log(route.type, 'event')
     return {
       article: route.listingParams.article,
       discover,
