@@ -276,7 +276,7 @@ const SingleEvent: React.FC = () => {
                         </div>
 
 
-                        <div className="lg:col-span-9 col-span-12">
+                        <div className="xl:col-span-9 md:col-span-8 col-span-12">
                             <div className="flex justify-between items-center mb-6">
                                 <div className="item">
                                     <p className="text-front-small uppercase breadcrumb">
@@ -369,7 +369,7 @@ const SingleEvent: React.FC = () => {
                         </div>
 
 
-                        <div className="lg:col-span-3 col-span-12">
+                        <div className="xl:col-span-3 md:col-span-4 col-span-12">
                             {renderEditButton()}
                             <div className="ads-wrapper mb-6">
                                 <Advertisement slot={slot?.article?.sidebar} ratio="vertical" />

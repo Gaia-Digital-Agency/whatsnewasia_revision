@@ -349,7 +349,7 @@ const Single: React.FC = () => {
                             <Link to={'/'}>Home</Link> / <Link to={`/${deepestLocation?.slug}`}>{deepestLocation?.name}</Link> / <Link to={`/${actualRoute?.country?.slug}/${actualRoute?.category?.slug_title}`}>{actualRoute?.category?.title}</Link>
                         </p>
                     </div>
-                    <div className="md:col-span-9 col-span-12">
+                    <div className="xl:col-span-9 md:col-span-8 col-span-12">
                         <div className="author-wrapper flex mb-6 justify-between">
                             <div className="item flex gap-x-6">
                                 <div className="author flex gap-x-2.5">
@@ -407,7 +407,7 @@ const Single: React.FC = () => {
                         
 
                     </div>
-                    <div className="md:col-span-3 col-span-12">
+                    <div className="xl:col-span-3 md:col-span-4 col-span-12">
                         
                         {renderEditButton()}
                         <Advertisement ratio="vertical" slot={slot?.article?.sidebar} />
