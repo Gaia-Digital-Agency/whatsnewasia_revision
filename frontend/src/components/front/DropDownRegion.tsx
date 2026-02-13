@@ -33,8 +33,8 @@ const DropDownRegion: React.FC = () => {
                     defaultLabel={'Choose Region'}
                     value={actualRoute.region?.slug || undefined}
                     classNames={{
-                        singleValue: "dropdown-country-nav dropdown-country-input text-theme-front-red md:w-[260px] w-[190px]",
-                        option: "dropdown-country-nav dropdown-country-option text-theme-front-red"
+                        singleValue: "dropdown-country-nav dropdown-country-input text-theme-front-red md:w-[260px] w-[190px] uppercase",
+                        option: "dropdown-country-nav dropdown-country-option text-theme-front-red uppercase"
                     }}
                 >
                 </SelectNav>
