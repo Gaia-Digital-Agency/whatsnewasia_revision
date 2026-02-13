@@ -198,7 +198,7 @@ const HeroImage: React.FC<ComponentTemplateHomeProps> = ({preContent = [], admin
                                 if(item) {
                                     return (
                                         <SwiperSlide key={`image-${i}`}>
-                                            <Image width="1920" height="1080" fetchPriority={i ? "low" : "high"} isLazy={i ? true : false } url={getFeaturedImageUrl(item, '16_9')} ratio={'max( calc(100vh - var(--nav-height)), 750px )'} mobileRatio="150%" overlay={true} alt={item?.featured_image_alt} />
+                                            <Image width="1920" height="1080" fetchPriority={i ? "low" : "high"} isLazy={i ? true : false } url={getFeaturedImageUrl(item, '16_9')} ratio={'max( calc(100vh - var(--nav-height) - 40px), 750px )'} mobileRatio="150%" overlay={true} alt={item?.featured_image_alt} />
                                             {/* <Image url={generateImageUrl(item.featured_image_url, item.id)} ratio={'calc(100vh - var(--nav-height))'} overlay={true} /> */}
                                         </SwiperSlide>
                                     )
