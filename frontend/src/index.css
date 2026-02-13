@@ -215,11 +215,7 @@ layer(base);
 
   --font-sans: "Helvetica Neue";
   --font-serif: "Playfair Display", serif;
-  --font-roboto: "Roboto", sans-serif;
-  --font-montserrat: "Montserrat", sans-serif;
-  --font-poppins: "Poppins", sans-serif;
-  --font-open-sans: "Open Sans", sans-serif;
-  --font-lato: "Lato", sans-serif;
+  --font-roboto: "Roboto";
 }
 
 header .line {
@@ -1305,10 +1301,33 @@ header .menus-wrapper .menu-link.is-active {
   border-left: 6px solid var(--color-front-red);
 }
 
+.dropdown-country-wrapper .control {
+  .dropdown-indicator {
+    fill: var(--color-front-red);
+    color: var(--color-front-red);
+  }
+}
+
+.dropdown-country-wrapper {
+  .should-default-control {
+    border-bottom: 1px solid #000;
+    .dropdown-country-nav {
+      &::before {
+        background-image: url("/images/icons/location-black.svg")!important;
+      }
+    }
+    .dropdown-indicator {
+      fill: var(--color-front-red);
+      color: #000;
+    }
+  }
+}
+
 article {
   .content-wrapper {
     p {
       /* font-size: ; */
+      font-family: "Roboto";
       font-size: 18px;
       line-height: 1.5;
     }
