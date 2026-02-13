@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import useAdvertisement from "../../hooks/useAdvertisement";
 
 type AdvertisementProps = {
-    ratio?: "vertical" | "horizontal",
+    ratio?: "vertical" | "leaderboard" | "horizontal" | "rectangle" | "square",
     slot?: string
 }
 
@@ -23,6 +23,17 @@ const Advertisement: React.FC<AdvertisementProps> = ({ ratio = "horizontal", slo
         }
     }, [])
 
+    const size = () => {
+        if (ratio == "horizontal" || ratio == 'leaderboard') {
+            return "md:w-[728px] md:h-[90px] w-[320px] h-[50px]"
+        }
+
+        if(ratio == 'rectangle' || ratio == 'square' || ratio == 'vertical') {
+            return "md:w-[300px] md:h-[250px]"
+        }
+        
+    }
+
 
     useEffect(() => {
         if(!ready || !adRef.current || !slot || !clientId) return
@@ -40,7 +51,7 @@ const Advertisement: React.FC<AdvertisementProps> = ({ ratio = "horizontal", slo
     }, [ready])
     return (
         <section ref={wrapperRef}>
-            <div className={`relative w-full ${ready ? '' : 'bg-[#d9d9d9]'} ${ratio === "vertical" ? "pt-[600px]" : "pt-[16%]"}`}>
+            <div className={`relative mx-auto ${ready ? '' : 'bg-[#d9d9d9]'} ${size()}`}>
                 {/* {ready && */}
                     <ins
                         ref={adRef}
