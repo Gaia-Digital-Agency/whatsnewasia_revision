@@ -1,6 +1,4 @@
 import React, {useEffect, useRef, useState} from "react"
-import SelectNav from "./SelectNav"
-import { useNavigate } from "react-router"
 import { CountryProps, useTaxonomies } from "../../context/TaxonomyContext"
 import { useRoute } from "../../context/RouteContext"
 import { CityProps, RegionProps } from "../../context/TaxonomyContext"
@@ -9,6 +7,9 @@ import { SwiperRef } from "swiper/react"
 import { SwiperSlide, Swiper } from "swiper/react"
 import "swiper/swiper-bundle.css";
 import { Navigation } from "swiper/modules"
+import DropDownCountry from "./DropDownCountry"
+import DropDownCity from "./DropDownCity"
+import DropDownRegion from "./DropDownRegion"
 
 // import { useAuth } from "../../context/AuthContext" // No longer needed after removing Indonesia redirect
 
@@ -26,7 +27,6 @@ const NavLocation: React.FC = () => {
     const swiperRef = useRef<SwiperRef>(null)
     const nextRef = useRef<HTMLDivElement>(null)
     const prevRef = useRef<HTMLDivElement>(null)
-    const navigate = useNavigate()    
     // const {isReadyRenderHeader} = useOutletContext<IsReadyRenderHeaderContextProps>()
     useEffect(() => {
         const actualCountry = actualRoute.country
@@ -39,44 +39,6 @@ const NavLocation: React.FC = () => {
         }
     }, [actualRoute])
 
-    // useEffect(() => {
-    //     // setTimeout(() => {
-    //         if(swiperRef.current) {
-    //             swiperRef.current.swiper.init()
-    //             // swiperRef.current.swiper.width = 100
-    //             // swiperRef.current.swiper
-    //         }
-    //     // }, 1000)
-    // }, [])
-
-    const changeCountryHandler = (country: string | number) => {
-        if(country == '') {
-            navigate(`${actualRoute?.category ? `/${actualRoute?.category?.slug_title}` : '/'}`)
-            return
-        }
-        navigate(`/${country}${actualRoute?.category ? `/${actualRoute?.category?.slug_title}` : ''}`)
-        return
-    }
-
-    const changeCityHandler = (city: string | number) => {
-        // if(!locations) return
-        if(city == '') {
-            navigate(`/${actualRoute?.country?.slug}${actualRoute?.category ? `/${actualRoute?.category?.slug_title}` : ''}`)
-            return
-        }
-        navigate(`/${actualRoute?.country?.slug}/${city}${actualRoute?.category ? `/${actualRoute?.category?.slug_title}` : ''}`)
-        return
-    }
-
-    const changeRegionHandler = (region: string | number) => {
-        if(region == '') {
-            navigate(`/${actualRoute?.country?.slug}/${actualRoute?.city?.slug}/${actualRoute?.category ? `/${actualRoute?.category?.slug_title}` : ''}`)
-            return
-        }
-        navigate(`/${actualRoute?.country?.slug}/${actualRoute?.city?.slug}/${region}${actualRoute?.category ? `/${actualRoute?.category?.slug_title}` : ''}`)
-        return
-    }
-
     // Disabled Indonesia redirect - now behaves like other countries
     const getCountryUrl = (country: CountryProps) => {
         return `/${country.slug}${actualRoute?.category ? `/${actualRoute.category.slug_title}` : ''}`
@@ -87,30 +49,18 @@ const NavLocation: React.FC = () => {
             <>
                 <div className="flex flex-col md:flex-row text-front-nav-header gap-y-2 md:gap-y-0 md:gap-x-3">
                     <div className="md:w-[250px] w-full">
-                        <SelectNav classNames={{singleValue: "desktop-country-nav uppercase", option: "desktop-country-nav"}} defaultLabel={"All Asia"} redOnActive={true} onChange={changeCountryHandler} value={actualRoute?.country ? actualRoute.country.slug : undefined} options={
-                            filteredTax?.countries?.map(country => {
-                                return {value: country.slug, label: country.name}
-                            }) ?? []
-                        } />
+                        <DropDownCountry />
                     </div>
                     {
                         !!(cities && actualRoute.country && cities.length) &&
                         <div className="md:w-[250px] w-full">
-                            <SelectNav classNames={{singleValue: "desktop-country-nav uppercase", option: "desktop-country-nav"}} defaultLabel={"Explore City"} onChange={changeCityHandler} value={actualRoute.city ? actualRoute.city.slug : undefined} options={
-                                cities.map(city => {
-                                    return {value: city.slug, label: city.name}
-                                })
-                            } />
+                            <DropDownCity />
                         </div>
                     }
                     {
                         !!(regions && actualRoute.city && regions.length) && 
                         <div className="md:w-[250px] w-full">
-                            <SelectNav classNames={{singleValue: "desktop-country-nav uppercase", option: "desktop-country-nav"}} defaultLabel={"Explore by Area"} onChange={changeRegionHandler} value={actualRoute.region ? actualRoute.region.slug : undefined} options={
-                                regions.map(region => {
-                                    return {value: region.slug, label: region.name}
-                                })
-                            } />
+                            <DropDownRegion />
                         </div>
                     }
                 </div>
@@ -120,7 +70,7 @@ const NavLocation: React.FC = () => {
     return (
         <>
             <div className="country-select-wrapper hidden lg:flex gap-x-[10px] gap-y-4 items-center w-full">
-                    <p className="font-serif text-front-subtitle-big font-bold flex-shrink-0">EXPLORE COUNTRIES</p>
+                    <p className="text-front-body font-medium flex-shrink-0">EXPLORE COUNTRIES</p>
                     {/* <div className="nav-location-selector-wrapper flex items-center"> */}
                         <div className="arrow-left arrow-wrapper" ref={prevRef}>
                             <div className="arrow">
@@ -128,9 +78,10 @@ const NavLocation: React.FC = () => {
                             </div>
                         </div>
                         <Swiper
-                            slidesPerView={3}
+                            slidesPerView={5}
                             spaceBetween={15}
                             ref={swiperRef}
+                            loop={true}
                             modules={[Navigation]}
                             navigation={
                                 {
@@ -145,7 +96,7 @@ const NavLocation: React.FC = () => {
                                 return (
                                     <SwiperSlide>
                                         <div className="country uppercase text-center items-center" key={`navlocation-explore-${country.id}`}>
-                                            <Link className="text-front-nav-header font-medium border-[2px] border-front-red flex justify-center items-center h-10 w-full transition text-white bg-front-red hover:text-black hover:bg-white" to={getCountryUrl(country)}>{country.name}</Link>
+                                            <Link className="text-front-nav-header font-medium border-[2px] border-front-red flex justify-center items-center h-10 w-full transition text-black bg-white hover:text-white hover:bg-front-red" to={getCountryUrl(country)}>{country.name}</Link>
                                         </div>
                                     </SwiperSlide>
                                 )
