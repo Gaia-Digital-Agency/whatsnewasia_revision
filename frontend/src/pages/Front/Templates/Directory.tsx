@@ -18,6 +18,7 @@ import pkg from "../../../lib/utils/Helmet"
 const {Helmet} = pkg
 import { getCategoryWithFields } from "../../../services/category.service"
 import useAdvertisement from "../../../hooks/useAdvertisement"
+import DateArticle from "../../../components/front/DateArticle"
 
 const API_URL = import.meta.env.VITE_WHATSNEW_BACKEND_URL
 
@@ -59,7 +60,7 @@ const RenderPagination: React.FC<PaginationProps> = ({page, currentPage, onClick
             </div>
             {
                 typeof page == 'object' &&
-                page.map(pag => (<RenderPages page={pag} currentPage={currentPage} onClick={onClick} />))
+                page.map(pag => (<RenderPages key={`pagination-${pag}`} page={pag} currentPage={currentPage} onClick={onClick} />))
             }
             <div className="next-button cursor-pointer" onClick={() => {onClick(currentPage + 1)}}>
                 <svg xmlns="http://www.w3.org/2000/svg" width="8" height="12" viewBox="0 0 8 12" fill="none">
@@ -71,7 +72,6 @@ const RenderPagination: React.FC<PaginationProps> = ({page, currentPage, onClick
 }
 
 const ArticleItem: React.FC<ArticleItemProps> = ({article, tag}) => {
-    console.log(article.updatedAt, article.title, formatPublished(article.updatedAt))
     const {getPermalink, getFeaturedImageUrl} = useArticle()
     return (
         <>
@@ -91,15 +91,16 @@ const ArticleItem: React.FC<ArticleItemProps> = ({article, tag}) => {
             <div className="subtitle-wrapper mb-5">
                 <p className="text-front-small leading-normal text-front-soft-gray">{article.sub_title}</p>
             </div>
-            <div className="date-wrapper flex gap-x-2">
+            {/* <div className="date-wrapper flex gap-x-2">
                 <svg xmlns="http://www.w3.org/2000/svg" width="15" height="14" viewBox="0 0 15 14" fill="none">
-                    <path d="M1.125 4.14229C1.125 3.17103 1.91236 2.38367 2.88362 2.38367H12.1164C13.0877 2.38367 13.875 3.17103 13.875 4.14229V11.6164C13.875 12.5877 13.0877 13.375 12.1164 13.375H2.88362C1.91236 13.375 1.125 12.5877 1.125 11.6164V4.14229Z" stroke="#7F7F7F" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M3.98267 0.624878V3.70246" stroke="#7F7F7F" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M11.0173 0.624878V3.70246" stroke="#7F7F7F" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M3.76294 5.90027H11.2371" stroke="#7F7F7F" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M1.125 4.14229C1.125 3.17103 1.91236 2.38367 2.88362 2.38367H12.1164C13.0877 2.38367 13.875 3.17103 13.875 4.14229V11.6164C13.875 12.5877 13.0877 13.375 12.1164 13.375H2.88362C1.91236 13.375 1.125 12.5877 1.125 11.6164V4.14229Z" stroke="var(--color-front-red)" strokeWidth="0.9" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M3.98267 0.624878V3.70246" stroke="var(--color-front-red)" strokeWidth="0.9" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M11.0173 0.624878V3.70246" stroke="var(--color-front-red)" strokeWidth="0.9" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M3.76294 5.90027H11.2371" stroke="var(--color-front-red)" strokeWidth="0.9" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
-                <p className="text-front-small text-[#A9A9A9]">{formatPublished(article.updatedAt)}</p>
-            </div>
+                <p className="text-front-small text-front-red">{formatPublished(article.updatedAt)}</p>
+            </div> */}
+            <DateArticle date={article?.updatedAt} />
         </>
     )
 }
@@ -189,6 +190,16 @@ const Directory: React.FC<{isTrending?: boolean}> = ({isTrending = false}) => {
                 setContent([])
             }
         })()
+        
+        // setShouldQuery(false)
+        // const theTitle = actualRoute.category?.sub_title
+        // const theDescription = actualRoute.category?.description
+        // setTitle(theTitle)
+        // setDescription(theDescription)
+        // setSubCategories(taxonomies?.categories?.filter(cat => (cat.id_parent == actualRoute.category?.id)))
+    }, [actualRoute, searchPage, clientChange])
+
+    useEffect(() => {
         ;(async() => {
             if(actualRoute.category) {
                 const getCategory = await getCategoryWithFields(actualRoute?.category?.id, {
@@ -218,13 +229,7 @@ const Directory: React.FC<{isTrending?: boolean}> = ({isTrending = false}) => {
             setParentCat(parentCategory)
             setSubCategories(taxonomies?.categories?.filter(cat => (cat.id_parent == actualRoute.category?.id)));
         }
-        // setShouldQuery(false)
-        // const theTitle = actualRoute.category?.sub_title
-        // const theDescription = actualRoute.category?.description
-        // setTitle(theTitle)
-        // setDescription(theDescription)
-        // setSubCategories(taxonomies?.categories?.filter(cat => (cat.id_parent == actualRoute.category?.id)))
-    }, [actualRoute, searchPage, clientChange])
+    }, [actualRoute])
 
     const getTagById = (tag: number | undefined) => {
         return tags?.find(_tag => _tag.id == tag)
@@ -285,9 +290,7 @@ const Directory: React.FC<{isTrending?: boolean}> = ({isTrending = false}) => {
                     <Link className={`px-5 py-3 cursor-pointer text-front-small ${actualRoute.category?.id == parentCat?.id ? 'is-active text-front-red' : 'text-[#4B4B4B]'}`} to={`${getLocationRouteUrl()}/${parentCat.slug_title}`}>{parentCat.title}</Link>
                 }
                 {subCategories.map(subCat => (
-                    <>
-                        <Link className={`px-5 py-3 cursor-pointer text-front-small ${actualRoute.category?.id == subCat.id ? 'is-active text-front-red' : 'text-[#4B4B4B]'}`} to={`${getLocationRouteUrl()}/${subCat.slug_title}`}>{subCat.title}</Link>
-                    </>
+                    <Link key={`subcategory-${subCat.id}`} className={`px-5 py-3 cursor-pointer text-front-small ${actualRoute.category?.id == subCat.id ? 'is-active text-front-red' : 'text-[#4B4B4B]'}`} to={`${getLocationRouteUrl()}/${subCat.slug_title}`}>{subCat.title}</Link>
                 ))}
                 {/* <div onClick={() => {subCatClickHandler(0)}} className={`px-5 py-3 cursor-pointer text-front-small ${currentCat == theCategory?.id ? 'is-active text-front-red' : 'text-[#4B4B4B]'}`}>{theCategory?.title}</div> */}
                 {/* {subCategories?.map(cat => {
@@ -301,25 +304,22 @@ const Directory: React.FC<{isTrending?: boolean}> = ({isTrending = false}) => {
     }
 
     const tagsRender = () => {
-        if(isTrending) return
+        if(isTrending || !tags?.length) return
         return (
             <>
             <div className="outer overflow-x-auto mb-10">
                 <div className="grid grid-cols-8 gap-x-8 gap-y-10 justify-center pb-10 w-max md:w-full">
                     {
                         tags?.map((tag) => {
-                            // if(i % 2 == 0) return
                             return (
-                                <>
-                                    <div className={`item tag-wrapper tag-selector cursor-pointer ${tag.id == currentTag ? 'active' : ''}`} onClick={(() => {tagClickHandler(tag.id)})}>
-                                        <div className="image-wrapper mb-5 text-center">
-                                            <img src={`${API_URL}/${tag.icon}`} className="w-[70px] h-[70px] mx-auto rounded-full bg-[#D9D9D9]" alt="" />
-                                        </div>
-                                        <div className="text-wrapper text-center">
-                                            <p className="text-front-small">{tag.name}</p>
-                                        </div>
+                                <div key={`tag-${tag.id}`} className={`item tag-wrapper tag-selector cursor-pointer ${tag.id == currentTag ? 'active' : ''}`} onClick={(() => {tagClickHandler(tag.id)})}>
+                                    <div className="image-wrapper mb-5 text-center">
+                                        <img src={`${API_URL}/${tag.icon}`} className="w-[70px] h-[70px] mx-auto rounded-full bg-[#D9D9D9]" alt="" />
                                     </div>
-                                </>
+                                    <div className="text-wrapper text-center">
+                                        <p className="text-front-small">{tag.name}</p>
+                                    </div>
+                                </div>
                             )
                         })
                     }
@@ -352,7 +352,7 @@ const Directory: React.FC<{isTrending?: boolean}> = ({isTrending = false}) => {
                     }
                     return (
                         <>
-                            <div className={'md:col-span-4 col-span-12'}>
+                            <div className={'md:col-span-4 col-span-12'} key={`article-${article.id}`}>
                                 <ArticleItem article={article} tag={getTagById(theTag) ?? undefined} />
                             </div>
                         </>
@@ -368,7 +368,7 @@ const Directory: React.FC<{isTrending?: boolean}> = ({isTrending = false}) => {
     return (
         <>
             <Helmet>
-                <title>{isTrending ? 'Trending' : ''}{actualRoute.category?.title ?? ''} - Whatsnew Asia</title>
+                <title>{isTrending ? 'Trending' : ''}{actualRoute.category?.title ?? ''} - What's New Asia</title>
                 <meta name="description" content="Whats's New Asia is the ultimate city guide for expats and travelers, featuring the best dining, events, schools, wellness, and travel in Asia" />
             </Helmet>
             <section className="py-12">

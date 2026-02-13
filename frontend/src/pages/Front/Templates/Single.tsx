@@ -135,9 +135,6 @@ const Single: React.FC = () => {
     const [isClient, setIsClient] = useState<boolean>(false)
     const deepestLocation = getDeepestLocation(actualRoute.article, 'city')
 
-    const [fontFamily, setFontFamily] = useState<string>('font-sans')
-    const [fontWeight, setFontWeight] = useState<string>('font-normal')
-
     useEffect(() => {
         setCurrentUrl(window.location.href)
         setIsClient(true)
@@ -238,94 +235,93 @@ const Single: React.FC = () => {
         }
     }
 
-    const generateClassNamesForFonts = () => {
-        if(!isClient) return
-        return `${fontFamily} ${fontWeight}`
-    }
+    // const generateClassNamesForFonts = () => {
+    //     if(!isClient) return
+    //     return `${fontFamily} ${fontWeight}`
+    // }
 
-    const renderFontSelection = () => {
-        const familySelection = [
-            {
-                value: "font-sans",
-                label: "Helvetica (WNA)",
-                selected: true
-            },
-            {
-                value: "font-roboto",
-                label: "Roboto"
-            },
-            {
-                value: "font-poppins",
-                label: "Poppins"
-            },
-            {
-                value: "font-open-sans",
-                label: "Open Sans"
-            },
-            {
-                value: "font-lato",
-                label: "Lato"
-            }
-        ]
-        const weightSelection = [
-            {
-                value: "font-thin",
-                label: "thin"
-            },
-            {
-                value: "font-extralight",
-                label: "extra-light"
-            },
-            {
-                value: "font-light",
-                label: "light"
-            },
-            {
-                value: "font-normal",
-                label: "regular",
-                selected: true
-            },
-            {
-                value: "font-medium",
-                label: "medium"
-            },
-            {
-                value: "font-semibold",
-                label: "semibold"
-            },
-            {
-                value: "font-bold",
-                label: "bold"
-            },
-        ]
-        return (
-            <div className="fixed right-0 bottom-0 border border-front-red">
-                <div className="inner bg-white p-8">
-                    <div className="mb-8">
-                        <p>
-                            Font Family
-                        </p>
-                        <select className={`border border-black`} name="" onChange={(e) => {setFontFamily(e.target.value)}} id="">
-                            {familySelection.map(fam => (
-                                <option value={fam.value} selected={fam.selected ?? false} className={fam.value} key={`fam-${fam.value}`}>{fam.label}</option>
-                            ))}
-                        </select>
-                    </div>
-                    <div className="">
-                        <p>
-                            Font Weight
-                        </p>
-                        <select className="border border-black" name="" id="" onChange={(e) => {setFontWeight(e.target.value)}}>
-                            {weightSelection.map(fam => (
-                                <option value={fam.value} key={`fam-${fam.value}`} selected={fam.selected ?? false}>{fam.label}</option>
-                            ))}
-                        </select>
-                    </div>
-                </div>
-            </div>
-        )
-    }
-// font-poppins font-montserrat font-roboto
+    // const renderFontSelection = () => {
+    //     const familySelection = [
+    //         {
+    //             value: "font-sans",
+    //             label: "Helvetica (WNA)",
+    //             selected: true
+    //         },
+    //         {
+    //             value: "font-roboto",
+    //             label: "Roboto"
+    //         },
+    //         {
+    //             value: "font-poppins",
+    //             label: "Poppins"
+    //         },
+    //         {
+    //             value: "font-open-sans",
+    //             label: "Open Sans"
+    //         },
+    //         {
+    //             value: "font-lato",
+    //             label: "Lato"
+    //         }
+    //     ]
+    //     const weightSelection = [
+    //         {
+    //             value: "font-thin",
+    //             label: "thin"
+    //         },
+    //         {
+    //             value: "font-extralight",
+    //             label: "extra-light"
+    //         },
+    //         {
+    //             value: "font-light",
+    //             label: "light"
+    //         },
+    //         {
+    //             value: "font-normal",
+    //             label: "regular",
+    //             selected: true
+    //         },
+    //         {
+    //             value: "font-medium",
+    //             label: "medium"
+    //         },
+    //         {
+    //             value: "font-semibold",
+    //             label: "semibold"
+    //         },
+    //         {
+    //             value: "font-bold",
+    //             label: "bold"
+    //         },
+    //     ]
+    //     return (
+    //         <div className="fixed right-0 bottom-0 border border-front-red">
+    //             <div className="inner bg-white p-8">
+    //                 <div className="mb-8">
+    //                     <p>
+    //                         Font Family
+    //                     </p>
+    //                     <select className={`border border-black`} name="" onChange={(e) => {setFontFamily(e.target.value)}} id="">
+    //                         {familySelection.map(fam => (
+    //                             <option value={fam.value} selected={fam.selected ?? false} className={fam.value} key={`fam-${fam.value}`}>{fam.label}</option>
+    //                         ))}
+    //                     </select>
+    //                 </div>
+    //                 <div className="">
+    //                     <p>
+    //                         Font Weight
+    //                     </p>
+    //                     <select className="border border-black" name="" id="" onChange={(e) => {setFontWeight(e.target.value)}}>
+    //                         {weightSelection.map(fam => (
+    //                             <option value={fam.value} key={`fam-${fam.value}`} selected={fam.selected ?? false}>{fam.label}</option>
+    //                         ))}
+    //                     </select>
+    //                 </div>
+    //             </div>
+    //         </div>
+    //     )
+    // }
     return (
         <>
         <Helmet>
@@ -343,10 +339,11 @@ const Single: React.FC = () => {
             <meta name="twitter:description" content={actualRoute.article?.sub_title} />
             <meta name="twitter:image" content={`${IMAGE_URL}/${actualRoute.article?.featured_image_16_9_url || actualRoute.article?.featured_image_url || 'images/placeholder.png'}`} />
         </Helmet>
-        <article className={generateClassNamesForFonts()}>
-            {renderFontSelection()}
-            <div className="container mb-24">
-                <div className="grid grid-cols-12 pt-12 md:gap-x-10 gap-y-10">
+        <article>
+            <div className="container mb-12">
+                <div className="spacer pb-6"></div>
+                <Advertisement />
+                <div className="grid grid-cols-12 pt-6 md:gap-x-10 md:gap-y-0 gap-y-10">
                     <div className="col-span-12 mb-6">
                         <p className="text-front-small uppercase">
                             <Link to={'/'}>Home</Link> / <Link to={`/${deepestLocation?.slug}`}>{deepestLocation?.name}</Link> / <Link to={`/${actualRoute?.country?.slug}/${actualRoute?.category?.slug_title}`}>{actualRoute?.category?.title}</Link>
@@ -359,7 +356,7 @@ const Single: React.FC = () => {
                                     <svg xmlns="http://www.w3.org/2000/svg" width="15" height="16" viewBox="0 0 15 16" fill="none">
                                         <g clipPath="url(#clip0_83_51)">
                                             <rect width="15" height="15" transform="translate(0 0.5)" fill="white"/>
-                                            <path d="M1.875 11.2812V13.625H4.21875L11.1312 6.71249L8.7875 4.36874L1.875 11.2812ZM13.3813 4.46249L11.0375 2.11874L9.45625 3.70624L11.8 6.04999L13.3813 4.46249Z" fill="#7F7F7F"/>
+                                            <path d="M1.875 11.2812V13.625H4.21875L11.1312 6.71249L8.7875 4.36874L1.875 11.2812ZM13.3813 4.46249L11.0375 2.11874L9.45625 3.70624L11.8 6.04999L13.3813 4.46249Z" fill="var(--color-front-red)"/>
                                         </g>
                                         <defs>
                                             <clipPath id="clip0_83_51">
@@ -367,16 +364,16 @@ const Single: React.FC = () => {
                                             </clipPath>
                                         </defs>
                                     </svg>
-                                    <p className="text-[#A9A9A9] text-front-small">{content?.author_name}</p>
+                                    <p className="text-front-red text-front-small">{content?.author_name}</p>
                                 </div>
                                 <div className="author flex gap-x-2.5">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="15" height="14" viewBox="0 0 15 14" fill="none">
-                                        <path d="M1.125 4.14229C1.125 3.17103 1.91236 2.38367 2.88362 2.38367H12.1164C13.0877 2.38367 13.875 3.17103 13.875 4.14229V11.6164C13.875 12.5877 13.0877 13.375 12.1164 13.375H2.88362C1.91236 13.375 1.125 12.5877 1.125 11.6164V4.14229Z" stroke="#7F7F7F" strokeWidth="0.9" strokeLinecap="round" strokeLinejoin="round"/>
-                                        <path d="M3.98267 0.624878V3.70246" stroke="#7F7F7F" strokeWidth="0.9" strokeLinecap="round" strokeLinejoin="round"/>
-                                        <path d="M11.0173 0.624878V3.70246" stroke="#7F7F7F" strokeWidth="0.9" strokeLinecap="round" strokeLinejoin="round"/>
-                                        <path d="M3.76294 5.90027H11.2371" stroke="#7F7F7F" strokeWidth="0.9" strokeLinecap="round" strokeLinejoin="round"/>
+                                        <path d="M1.125 4.14229C1.125 3.17103 1.91236 2.38367 2.88362 2.38367H12.1164C13.0877 2.38367 13.875 3.17103 13.875 4.14229V11.6164C13.875 12.5877 13.0877 13.375 12.1164 13.375H2.88362C1.91236 13.375 1.125 12.5877 1.125 11.6164V4.14229Z" stroke="var(--color-front-red)" strokeWidth="0.9" strokeLinecap="round" strokeLinejoin="round"/>
+                                        <path d="M3.98267 0.624878V3.70246" stroke="var(--color-front-red)" strokeWidth="0.9" strokeLinecap="round" strokeLinejoin="round"/>
+                                        <path d="M11.0173 0.624878V3.70246" stroke="var(--color-front-red)" strokeWidth="0.9" strokeLinecap="round" strokeLinejoin="round"/>
+                                        <path d="M3.76294 5.90027H11.2371" stroke="var(--color-front-red)" strokeWidth="0.9" strokeLinecap="round" strokeLinejoin="round"/>
                                     </svg>
-                                    <p className="text-[#A9A9A9] text-front-small">{formatPublished(content?.updatedAt)}</p>
+                                    <p className="text-front-red text-front-small">{formatPublished(content?.updatedAt)}</p>
                                 </div>
                             </div>
 
@@ -413,6 +410,8 @@ const Single: React.FC = () => {
                     <div className="md:col-span-3 col-span-12">
                         
                         {renderEditButton()}
+                        <Advertisement ratio="vertical" slot={slot?.article?.sidebar} />
+                        <div className="spacer py-4"></div>
                         <Advertisement ratio="vertical" slot={slot?.article?.sidebar} />
                         <div className="spacer py-6"></div>
                         <p className="font-serif text-front-article-title">Discover More</p>

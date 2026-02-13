@@ -105,7 +105,7 @@ const Search: React.FC = () => {
     return (
         <>
             <Helmet>
-                <title>{q ?? 'Search'} - Whatsnew Asia</title>
+                <title>{q ?? 'Search'} - What's New Asia</title>
                 <meta name="description" content="Whats's New Asia is the ultimate city guide for expats and travelers, featuring the best dining, events, schools, wellness, and travel in Asia" />
             </Helmet>
             <section className="py-12">

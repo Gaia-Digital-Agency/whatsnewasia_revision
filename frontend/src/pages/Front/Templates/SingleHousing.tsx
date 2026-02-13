@@ -208,7 +208,7 @@ const SingleHousing: React.FC = () => {
     return (
         <>
         <Helmet>
-            <title>{actualRoute.article?.title} - Whatsnew Asia</title>
+            <title>{actualRoute.article?.title} - What's New Asia</title>
             <meta name="description" content={String(content?.meta_data?.meta_description ?? content?.sub_title ?? '')} />
             <link rel="canonical" href={`${SITE_URL}/${actualRoute.country?.slug}/${actualRoute.category?.slug_title}/${actualRoute.article?.slug}`} />
             <meta property="og:type" content="article" />

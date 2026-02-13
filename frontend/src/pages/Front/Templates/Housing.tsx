@@ -127,7 +127,7 @@ const Housing: React.FC = () => {
     return (
         <>
             <Helmet>
-                <title>Housing - Whatsnew Asia</title>
+                <title>Housing - What's New Asia</title>
             </Helmet>
             <section>
                 <div className="image-wrapper mb-10">

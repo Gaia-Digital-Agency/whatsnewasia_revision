@@ -37,12 +37,12 @@ const DiscoverArticle: React.FC<{article: ArticleProps}> = ({article}) => {
             <div className="image-wrapper mb-5">
                 <Image ratio="62%" url={getFeaturedImageUrl(article)} link={(getPermalink(article))} />
             </div>
-            <div className="category-wrapper">
+            <div className="category-wrapper mb-2">
                 <p className="uppercase text-front-red">{getCategoryById(article?.category_id)?.title}</p>
             </div>
             <div className="title-wrapper">
                 <Link to={getPermalink(article)}>
-                    <p className="text-front-subtitle font-serif">{article.title}</p>
+                    <p className="text-front-subtitle font-serif leading-[1.3]">{article.title}</p>
                 </Link>
             </div>
         </>
@@ -158,6 +158,7 @@ const SingleEvent: React.FC = () => {
     useEffect(() => {
         if(!clientChange) return
         console.log(actualRoute.article)
+        setContent(actualRoute.article)
     }, [actualRoute])
 
     useEffect(() => {
@@ -201,7 +202,7 @@ const SingleEvent: React.FC = () => {
                 console.log(e)
             }
         })()
-    }, [content, clientChange])
+    }, [content, clientChange, actualRoute])
 
     useEffect(() => {
         setCurrentPage(window.location.href)
@@ -240,10 +241,19 @@ const SingleEvent: React.FC = () => {
         }
     }
 
+    const timeRender = () => {
+        if(content?.meta_data?.whole_day) {
+            return '00.00 - 24.00'
+        }
+        const startTime = content?.meta_data?.start_time ? `${formatTime(`${content?.meta_data?.start_time}`)} ` : ''
+        const endTime = content?.meta_data?.end_time ? `- ${formatTime(`${content?.meta_data?.end_time}`)}` : ''
+        return startTime + endTime
+    }
+
     return (
         <>
             <Helmet>
-                <title>{actualRoute.article?.title} - Whatsnew Asia</title>
+                <title>{actualRoute.article?.title} - What's New Asia</title>
                 <meta name="description" content={String(content?.meta_data?.meta_description ?? content?.sub_title ?? '')} />
                 <link rel="canonical" href={`${SITE_URL}/${actualRoute.country?.slug}/${actualRoute.category?.slug_title}/${actualRoute.article?.slug}`} />
                 <meta property="og:type" content="article" />
@@ -259,8 +269,8 @@ const SingleEvent: React.FC = () => {
             </Helmet>
             <article>
                 <div className="container">
-                    <div className="grid grid-cols-12 lg:gap-x-10 py-12">
-                        <div className="lg:col-span-8 lg:col-start-3 col-span-12 mb-12">
+                    <div className="grid grid-cols-12 lg:gap-x-10 py-6">
+                        <div className="lg:col-span-8 lg:col-start-3 col-span-12 mb-6">
                             <Advertisement slot={slot?.home} />
                         </div>
 
@@ -291,7 +301,7 @@ const SingleEvent: React.FC = () => {
                                 </div>
                             </div>
                             <div className="title-wrapper mb-6">
-                                <h1 className="text-front-article-title font-serif">{content?.title}</h1>
+                                <h1 className="text-front-single-hero font-serif">{content?.title}</h1>
                             </div>
                             <div className="date-information mb-8">
                                 {(content?.meta_data?.start_date || content?.meta_data?.start_time) &&
@@ -311,7 +321,7 @@ const SingleEvent: React.FC = () => {
                                             </svg>
                                         </div>
                                         <div className="text">
-                                            {content?.meta_data?.start_date ? formatDate(`${content?.meta_data?.start_date}`) : 'Saturday, 16 September 2025'}
+                                            {content?.meta_data?.start_date ? formatDate(`${content?.meta_data?.start_date}`) : ''} {content?.meta_data?.end_date ? `- ${formatDate(String(content?.meta_data?.end_date))}` : ''}
                                         </div>
                                     </div>
                                 }
@@ -331,14 +341,15 @@ const SingleEvent: React.FC = () => {
                                             </svg>
                                         </div>
                                         <div className="text">
-                                            {content?.meta_data?.start_time ? `${formatTime(`${content?.meta_data?.start_time}`)} ` : ''}
-                                            {content?.meta_data?.end_time ? `- ${formatTime(`${content?.meta_data?.end_time}`)}` : ''}
+                                            {timeRender()}
+                                            {/* {content?.meta_data?.start_time ? `${formatTime(`${content?.meta_data?.start_time}`)} ` : ''}
+                                            {content?.meta_data?.end_time ? `- ${formatTime(`${content?.meta_data?.end_time}`)}` : ''} */}
                                         </div>
                                     </div>
                                 }
                             </div>
                             <div className="share-buttons-wrapper mb-8 flex items-center gap-x-5">
-                                <p>Share:</p>
+                                <p className="text-front-red">Share:</p>
                                 {currentPage &&
                                 <>
                                     <FacebookShareButton url={currentPage}>
@@ -359,9 +370,13 @@ const SingleEvent: React.FC = () => {
 
                         <div className="lg:col-span-3 col-span-12">
                             {renderEditButton()}
-                            <div className="ads-wrapper mb-12">
+                            <div className="ads-wrapper mb-6">
+                                <Advertisement slot={slot?.article?.sidebar} ratio="vertical" />
+                                <div className="spacer py-4"></div>
                                 <Advertisement slot={slot?.article?.sidebar} ratio="vertical" />
                             </div>
+                            <p className="font-serif text-front-article-title">Discover More</p>
+                            <div className="spacer py-2"></div>
                             {renderDiscover()}
                         </div>
 

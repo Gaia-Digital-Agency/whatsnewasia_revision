@@ -20,6 +20,7 @@ import useAdvertisement from "../../../hooks/useAdvertisement"
 import {DateRangePicker} from 'rsuite'
 import 'rsuite/DateRangePicker/styles/index.css';
 import pkg from "../../../lib/utils/Helmet"
+import DateArticle from "../../../components/front/DateArticle"
 const {Helmet} = pkg
 
 type PaginationProps = {page: Array<string | number> | number | string, currentPage: number, onClick: (pag: number) => void}
@@ -90,7 +91,7 @@ const ArticleItem: React.FC<ArticleItemProps> = ({article, tag}) => {
             <div className="subtitle-wrapper mb-5">
                 <p className="text-front-small text-front-soft-grey leading-normal">{article.sub_title}</p>
             </div>
-            <div className="date-wrapper flex gap-x-2">
+            {/* <div className="date-wrapper flex gap-x-2">
                 <svg xmlns="http://www.w3.org/2000/svg" width="15" height="14" viewBox="0 0 15 14" fill="none">
                     <path d="M1.125 4.14229C1.125 3.17103 1.91236 2.38367 2.88362 2.38367H12.1164C13.0877 2.38367 13.875 3.17103 13.875 4.14229V11.6164C13.875 12.5877 13.0877 13.375 12.1164 13.375H2.88362C1.91236 13.375 1.125 12.5877 1.125 11.6164V4.14229Z" stroke="#7F7F7F" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round"/>
                     <path d="M3.98267 0.624878V3.70246" stroke="#7F7F7F" strokeWidth="0.9" strokeLinecap="round" strokeLinejoin="round"/>
@@ -98,7 +99,8 @@ const ArticleItem: React.FC<ArticleItemProps> = ({article, tag}) => {
                     <path d="M3.76294 5.90027H11.2371" stroke="#7F7F7F" strokeWidth="0.9" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
                 <p className="text-front-small text-[#A9A9A9]">{formatPublished(article.updatedAt)}</p>
-            </div>
+            </div> */}
+            <DateArticle date={article.updatedAt} />
         </>
     )
 }
@@ -342,7 +344,7 @@ const Deals: React.FC = () => {
     return (
         <>
             <Helmet>
-                <title>Deals - Whatsnew Asia</title>
+                <title>Deals - What's New Asia</title>
                 <meta name="description" content="Whats's New Asia is the ultimate city guide for expats and travelers, featuring the best dining, events, schools, wellness, and travel in Asia" />
             </Helmet>
             <section className="py-12">
