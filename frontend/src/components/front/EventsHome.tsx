@@ -113,7 +113,7 @@ const EventsHome: React.FC<ComponentTemplateHomeProps> = ({preContent = []}) => 
                                                             </Link>
                                                         </div>
                                                         <div className="link-text-wrapper">
-                                                            <TextLink text="Read More" uppercase color="gray" link={getPermalink(article)}></TextLink>
+                                                            <TextLink text="Read More" uppercase link={getPermalink(article)}></TextLink>
                                                         </div>
                                                     </div>
                                                 </div>

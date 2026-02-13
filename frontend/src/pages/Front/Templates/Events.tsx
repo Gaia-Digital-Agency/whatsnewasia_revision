@@ -62,7 +62,7 @@ const ArticleCard: React.FC<{article: ArticleProps & {createdAt?: string}}> = ({
                         <p>{article.sub_title}</p>
                     </div>
                     <div className="button-wrapper">
-                        <TextLink link={generateUrl(article)} color="gray" text="READ MORE" />
+                        <TextLink link={generateUrl(article)} text="READ MORE" />
                     </div>
                 </div>
                 <div className="lg:col-span-6 col-span-12 order-1 lg:order-2">
@@ -385,14 +385,14 @@ const Events: React.FC = () => {
     return (
         <>
             <Helmet>
-                <title>Events - Whatsnew Asia</title>
+                <title>Events - What's New Asia</title>
                 <meta name="description" content="Whats's New Asia is the ultimate city guide for expats and travelers, featuring the best dining, events, schools, wellness, and travel in Asia" />
             </Helmet>
             <section>
-                <div className="container py-16">
+                <div className="container py-8">
                     <Advertisement slot={slot?.home} />
 
-                    <div className="grid grid-cols-12 py-12" ref={contentWrapperRef}>
+                    <div className="grid grid-cols-12 py-6" ref={contentWrapperRef}>
                         <div className="lg:col-span-6 col-span-12 lg:col-start-4 text-center">
                             <p className="font-serif text-front-hero mb-4">{title}</p>
                             <p className="text-front-body">{description}</p>
