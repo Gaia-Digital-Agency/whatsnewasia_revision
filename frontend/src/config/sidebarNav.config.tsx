@@ -87,3 +87,13 @@ export const othersItems: NavItem[] = [
     ],
   },
 ];
+
+
+export const adsItems: NavItem[] = [
+  {
+    name: "Ads Management",
+    icon: <Cog />,
+    path: "ads",
+    allowedUserLevel: ['super_admin']
+  }
+]
