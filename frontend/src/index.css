@@ -1514,13 +1514,15 @@ article .content-wrapper {
   font-size: var(--text-front-body-big);
 }
 
-#events .container > .grid {
-  overflow: visible hidden;
-  @media(min-width: 768px) {
-    overflow: hidden visible;
-  }
-  @media(min-width: 1024px) {
-    overflow: hidden visible;
+#events, #overseas {
+  .container > .grid {
+    overflow: visible hidden;
+    @media(min-width: 768px) {
+      overflow: hidden visible;
+    }
+    @media(min-width: 1024px) {
+      overflow: hidden visible;
+    }
   }
 }
 
