@@ -23,7 +23,7 @@ const TextLink: React.FC<TextLinkProps> = ({text = 'Read More', link = null, col
     }
 
     const renderText = (
-        <p className={`inline-block text-front-small tracking-[.2em] transition hover:text-front-red hover:decoration-front-red decoration-solid underline ${colorClass()}${uppercase ? ' uppercase' : ''}`}>{text}</p>
+        <p className={`inline-block text-front-small tracking-[.2em] transition text-front-red decoration-front-red decoration-solid underline ${colorClass()}${uppercase ? ' uppercase' : ''}`}>{text}</p>
     )
 
     if(link) {
