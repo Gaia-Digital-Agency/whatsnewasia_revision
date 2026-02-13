@@ -1417,7 +1417,21 @@ article {
 article .content-wrapper a,
 article .content-wrappper a {
   /* color: #2772e1; */
-  text-decoration: underline;
+  /* text-decoration: underline; */
+  position: relative;
+  &::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 1px;
+    border-bottom: 1px solid var(--color-front-red);
+    width: 0;
+    transition: width .2s ease;
+  }
+  &:hover::before {
+    width: 100%;
+  }
 }
 
 article .content-wrapper {
@@ -1431,6 +1445,17 @@ article .content-wrapper ol {
 
 article .content-wrapper li {
   margin-bottom: 1.25rem;
+}
+
+article {
+  .breadcrumb {
+    a {
+      transition: color .2s ease;
+      &:hover {
+        color: var(--color-front-red);
+      }
+    }
+  }
 }
 
 .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="larger"]::before {
@@ -1496,5 +1521,43 @@ article .content-wrapper {
   }
   @media(min-width: 1024px) {
     overflow: hidden visible;
+  }
+}
+
+header {
+  .socials-header-wrapper {
+    a svg path {
+      transition: fill .2s ease;
+    }
+    a:hover svg path {
+      fill: #000;
+    }
+  }
+}
+
+footer {
+  a {
+    svg path {
+      transition: fill .2s ease;
+    }
+    transition: color .2s ease;
+  }
+  a:hover {
+    svg path {
+      fill: #000;
+    }
+    color: var(--color-front-red);
+  }
+
+}
+
+article {
+  svg {
+    path {
+      transition: fill .2s ease;
+    }
+    &:hover path {
+      fill: #000;
+    }
   }
 }

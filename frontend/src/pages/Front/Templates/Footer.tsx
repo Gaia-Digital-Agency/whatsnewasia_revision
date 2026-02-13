@@ -48,7 +48,7 @@ const Footer: React.FC = () => {
                                 </p>
                                 <p className="text-front-body-big">
                                     Hp. <Link to={'tel:6281382502771'} target="_blank">+62813-8250-2771</Link> <br />
-                                    Email. <Link to={'mailto:admin@whatsnewindonesia.com'} target="_blank">admin@whatsnewindonesia.com</Link>
+                                    Email. <Link to={'mailto:admin@whatsnewasia.com'} target="_blank">admin@whatsnewasia.com</Link>
                                 </p>
                             </div>
                         </div>

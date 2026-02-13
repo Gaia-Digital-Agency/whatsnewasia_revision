@@ -238,7 +238,7 @@ const Header: React.FC = () => {
                         <div className={`item flex-1 max-w-[320px] items-center flex ${actualRoute.country ? 'lg:hidden' : 'lg:flex'}`}>
                             <SearchBar search={search} setSearch={setSearch} />
                         </div>
-                        <div className="md:flex hidden gap-x-4">
+                        <div className="md:flex hidden gap-x-4 socials-header-wrapper">
                             <Link to={'#'} target="_blank">
                                     <RedFacebookIcon />
                                 </Link>

@@ -345,7 +345,7 @@ const Single: React.FC = () => {
                 <Advertisement />
                 <div className="grid grid-cols-12 pt-6 md:gap-x-10 md:gap-y-0 gap-y-10">
                     <div className="col-span-12 mb-6">
-                        <p className="text-front-small uppercase">
+                        <p className="text-front-small uppercase breadcrumb">
                             <Link to={'/'}>Home</Link> / <Link to={`/${deepestLocation?.slug}`}>{deepestLocation?.name}</Link> / <Link to={`/${actualRoute?.country?.slug}/${actualRoute?.category?.slug_title}`}>{actualRoute?.category?.title}</Link>
                         </p>
                     </div>
@@ -377,7 +377,7 @@ const Single: React.FC = () => {
                                 </div>
                             </div>
 
-                            <div className="item">
+                            <div className="item share-icon-wrapper">
                                 <ShareIcon className="cursor-pointer" onClick={shareClickHandler} />
                             </div>
                         </div>

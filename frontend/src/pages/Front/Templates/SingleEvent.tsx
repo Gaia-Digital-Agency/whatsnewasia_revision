@@ -128,7 +128,7 @@ const SingleEvent: React.FC = () => {
     const {setNotification} = useNotification()
     const {actualRoute, clientChange} = useRoute()
     const {slot} = useAdvertisement()
-    const {getFeaturedImageUrl} = useArticle()
+    const {getDeepestLocation, getFeaturedImageUrl} = useArticle()
     const [content, setContent] = useState<ArticleApiResponseProps | undefined>(initialData?.article ?? undefined)
     const [relatedArticle, setRelatedArticle] = useState<ArticleProps[]>(initialData?.related ?? [])
     const [discoverArticle, setDiscoverArticle] = useState<ArticleProps[]>(initialData?.discover ?? [])
@@ -137,6 +137,7 @@ const SingleEvent: React.FC = () => {
     const [tags, setTags] = useState<Tag[]>([])
     const {userDetails} = useAuth()
     const {isClient} = useIsClient()
+    const deepestLocation = getDeepestLocation(actualRoute.article, 'city')
 
     const renderEditButton = () => {
         if(!isClient) return <></>
@@ -274,21 +275,21 @@ const SingleEvent: React.FC = () => {
                             <Advertisement slot={slot?.home} />
                         </div>
 
-                        <div className="col-span-12 mb-6">
-                            <div className="flex justify-between items-center">
+
+                        <div className="lg:col-span-9 col-span-12">
+                            <div className="flex justify-between items-center mb-6">
                                 <div className="item">
+                                    <p className="text-front-small uppercase breadcrumb">
+                                        <Link to={'/'}>Home</Link> / <Link to={`/${deepestLocation?.slug}`}>{deepestLocation?.name}</Link> / <Link to={`/${actualRoute?.country?.slug}/${actualRoute?.category?.slug_title}`}>{actualRoute?.category?.title}</Link>
+                                    </p>
                                     {/* <p className="text-[#222222]">
                                         {formatPublished(content?.updatedAt)}
                                     </p> */}
                                 </div>
-                                <div className="item">
+                                <div className="item share-icon-wrapper">
                                     <ShareIcon className="cursor-pointer" onClick={shareClickHandler} />
                                 </div>
                             </div>
-                        </div>
-
-
-                        <div className="lg:col-span-9 col-span-12">
                             <div className="thumbnail-wrapper mb-6">
                                 <Image url={getFeaturedImageUrl(content ?? undefined)} ratio="56.25%" isLazy={false} fetchPriority="high" />
                             </div>
